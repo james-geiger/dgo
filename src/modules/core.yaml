@@ -30,7 +30,6 @@ default_range: string
 
 imports:
   - linkml:types
-  - glossary
   - management
 
 classes:

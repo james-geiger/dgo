@@ -48,4 +48,8 @@ def drop(node):
 drop(ident)
 g.remove((None, None, ident))
 
+ttl = g.serialize(format="turtle")
+Path(OUT).write_text(ttl)
+print(f"✓ wrote {OUT} ({len(where)} ids checked)")
+
 sys.exit(0)
