@@ -1,0 +1,7 @@
+{
+    "yaml.schemas": {
+        "https://linkml.io/linkml-model/linkml_model/jsonschema/meta.schema.json": [
+            "src/**/*.yaml"
+        ]
+    }
+}

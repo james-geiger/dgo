@@ -1,0 +1,61 @@
+id: https://w3id.org/dgo/core
+name: dgo_core
+description: >-
+  An ontology for data governance: business terms, subject areas,
+  stewardship roles and responsibilities, term-lifecycle status,
+  data classification, and semantic typing.
+version: 0.1.0
+license: https://w3id.org/dgo/LICENSE
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  dgo: https://w3id.org/dgo/
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+  org: http://www.w3.org/ns/org#
+  prov: http://www.w3.org/ns/prov#
+  foaf: http://xmlns.com/foaf/0.1/
+  vann: http://purl.org/vocab/vann/
+  bibo: http://purl.org/ontology/bibo/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  obo: http://purl.obolibrary.org/obo/
+  bfo: http://purl.obolibrary.org/obo/BFO_
+  obi: http://purl.obolibrary.org/obo/OBI_
+  iao: http://purl.obolibrary.org/obo/IAO_
+  owl: http://www.w3.org/2002/07/owl#
+  ro:  http://purl.obolibrary.org/obo/RO_
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+default_prefix: dgo
+default_range: string
+
+imports:
+  - linkml:types
+  - glossary
+  - management
+
+classes:
+
+  identifiable:
+    mixin: true
+    slots: [id, label]
+
+slots:
+
+  id:
+    description: The term's globally unique, persistent IRI. Its stable identity.
+    identifier: true
+    range: uriorcurie
+
+  label:
+    description: >-
+      Words
+    slot_uri: rdfs:label
+    required: true
+
+  type:
+    description: >-
+      The specific subclass this object instantiates, given as its class IRI (e.g. a chair).
+      Lets instance data name a subclass; emitted as rdf:type.
+    designates_type: true
+    slot_uri: rdf:type
+    range: uriorcurie
