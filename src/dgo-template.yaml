@@ -60,7 +60,7 @@ slots:
     multivalued: true
     inlined_as_list: true
   term_status_boundaries:
-    range: term status boundary
+    range: status boundary
     multivalued: true
     inlined_as_list: true
   business_glossaries:

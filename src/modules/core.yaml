@@ -63,10 +63,11 @@ slots:
 
   part_of:
     description: >-
-      Parthood (BFO part of). Transitive: a term in a subject area that is part
-      of a domain is part of that domain too. Each class narrows the range with
-      slot_usage (a governance process is part of a governance process, a term
-      is part of a subject area, and so on).
+      Parthood (BFO part of). Transitive: a subject area that is part of a
+      domain that is part of a glossary is part of that glossary too. Each class
+      narrows the range with slot_usage (a term is part of a glossary, a subject
+      area is part of a domain, a governance process is part of a broader
+      process, and so on).
     slot_uri: bfo:0000050
     range: entity
     transitive: true

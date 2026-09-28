@@ -24,7 +24,7 @@ classes:
     mixins: [identifiable]
     slots: [part_of]
     slot_usage:
-      part_of: { range: process }
+      part_of: { range: data governance }
     description: >-
       A process of governing an organization's data.
 

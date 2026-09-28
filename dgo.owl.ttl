@@ -113,31 +113,31 @@ dgo:DGO_00000022 a owl:Class ;
     skos:inScheme dgo:glossary .
 
 dgo:DGO_00000024 a owl:Class ;
-    rdfs:label "term drafted" ;
-    IAO:0000115 "The point where a term is in draft." ;
+    rdfs:label "drafted" ;
+    IAO:0000115 "The point where a term or modification has been first drafted." ;
     rdfs:subClassOf dgo:DGO_00000023 ;
-    skos:exactMatch dgo:TermDrafted ;
+    skos:exactMatch dgo:Drafted ;
     skos:inScheme dgo:glossary .
 
 dgo:DGO_00000025 a owl:Class ;
-    rdfs:label "term submitted for review" ;
-    IAO:0000115 "The " ;
+    rdfs:label "submitted for review" ;
+    IAO:0000115 "The point where a term or modification has moved into being verified by a data steward." ;
     rdfs:subClassOf dgo:DGO_00000023 ;
-    skos:exactMatch dgo:TermSubmittedForReview ;
+    skos:exactMatch dgo:SubmittedForReview ;
     skos:inScheme dgo:glossary .
 
 dgo:DGO_00000026 a owl:Class ;
-    rdfs:label "term approved" ;
-    IAO:0000115 "The resulting decision of a data governance council which indicates that a particular term has been approved for publishing. " ;
+    rdfs:label "approved" ;
+    IAO:0000115 "The point where a term or modification, resulting from a decision of the responsible data governance council, has been made final. " ;
     rdfs:subClassOf dgo:DGO_00000023 ;
-    skos:exactMatch dgo:TermApproved ;
+    skos:exactMatch dgo:Approved ;
     skos:inScheme dgo:glossary .
 
 dgo:DGO_00000027 a owl:Class ;
-    rdfs:label "term rejected" ;
-    IAO:0000115 "The resulting decision of a data governance council which indicates that a particular term has been rejected." ;
+    rdfs:label "rejected" ;
+    IAO:0000115 "The point where a term or modification, resulting from a decision of the responsible data governance council, is no longer under consideration. " ;
     rdfs:subClassOf dgo:DGO_00000023 ;
-    skos:exactMatch dgo:TermRejected ;
+    skos:exactMatch dgo:Rejected ;
     skos:inScheme dgo:glossary .
 
 <http://purl.obolibrary.org/obo/BFO_0000001> a owl:Class ;
@@ -161,9 +161,6 @@ dgo:DGO_00000016 a owl:Class ;
     rdfs:label "domain" ;
     IAO:0000115 "A group of glossary terms that relates to a particular section or definable ." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
             owl:allValuesFrom IAO:0000030 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
         [ a owl:Restriction ;
@@ -171,6 +168,9 @@ dgo:DGO_00000016 a owl:Class ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         IAO:0000030 ;
     skos:exactMatch dgo:Domain ;
@@ -180,13 +180,13 @@ dgo:DGO_00000018 a owl:Class ;
     rdfs:label "business glossary" ;
     IAO:0000115 "A glossary is a grouping of terms." ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:minCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         IAO:0000030 ;
     skos:exactMatch dgo:BusinessGlossary ;
@@ -216,22 +216,22 @@ dgo:DGO_00000018 a owl:Class ;
 
 dgo:DGO_00000002 a owl:Class ;
     rdfs:label "data governance council" ;
-    IAO:0000115 "Description." ;
+    IAO:0000115 "A group whose collective role is to implement the data governance process to which it is assigned." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0002351> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 ) ] ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0002351> ],
+            owl:maxCardinality 1 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000056> ],
         [ a owl:Restriction ;
             owl:minCardinality 0 ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0000056> ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0002351> ],
         [ a owl:Restriction ;
             owl:allValuesFrom dgo:DGO_00000001 ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0000056> ],
         [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000056> ],
+            owl:allValuesFrom [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 ) ] ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0002351> ],
         <http://purl.obolibrary.org/obo/BFO_0000027> ;
     skos:exactMatch dgo:DataGovernanceCouncil ;
     skos:inScheme dgo:management .
@@ -244,17 +244,17 @@ dgo:DGO_00000017 a owl:Class ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
             owl:someValuesFrom dgo:DGO_00000016 ],
         [ a owl:Restriction ;
-            owl:minCardinality 1 ;
+            owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:allValuesFrom IAO:0000030 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:anyURI ;
-            owl:onProperty dgo:id ],
         IAO:0000030 ;
     skos:exactMatch dgo:SubjectArea ;
     skos:inScheme dgo:glossary .
@@ -266,35 +266,35 @@ dgo:DGO_00000019 a owl:Class ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
             owl:someValuesFrom dgo:DGO_00000018 ],
         [ a owl:Restriction ;
-            owl:allValuesFrom IAO:0000030 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
-        [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty dgo:DGO_00000028 ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:DGO_00000028 ],
-        [ a owl:Restriction ;
             owl:minCardinality 1 ;
             owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty dgo:DGO_00000028 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty dgo:DGO_00000029 ],
         [ a owl:Restriction ;
             owl:allValuesFrom xsd:anyURI ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:allValuesFrom dgo:DGO_00000017 ;
             owl:onProperty dgo:DGO_00000029 ],
         [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:DGO_00000029 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty dgo:DGO_00000029 ],
-        [ a owl:Restriction ;
             owl:allValuesFrom xsd:string ;
             owl:onProperty dgo:DGO_00000028 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom IAO:0000030 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:DGO_00000028 ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:DGO_00000029 ],
         IAO:0000030 ;
     skos:exactMatch dgo:GlossaryTerm ;
     skos:inScheme dgo:glossary .
@@ -320,10 +320,7 @@ dgo:DGO_00000020 a owl:Class ;
     rdfs:label "term lifecycle process" ;
     IAO:0000115 "A governance process that brings a business term into, or changes it within, the business glossary." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000019 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0002234> ],
-        [ a owl:Restriction ;
-            owl:minCardinality 1 ;
+            owl:maxCardinality 1 ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0002234> ],
         [ a owl:Restriction ;
             owl:allValuesFrom [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 dgo:DGO_00000002 ) ] ;
@@ -332,7 +329,10 @@ dgo:DGO_00000020 a owl:Class ;
             owl:minCardinality 0 ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0000057> ],
         [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
+            owl:minCardinality 1 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0002234> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000019 ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0002234> ],
         dgo:DGO_00000001 ;
     skos:exactMatch dgo:TermLifecycleProcess ;
@@ -355,29 +355,29 @@ dgo:DGO_00000011 a owl:Class ;
     rdfs:label "governance role" ;
     IAO:0000115 "What an individual or entity is responsible for with respect to a managed term." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
-        [ a owl:Restriction ;
             owl:allValuesFrom [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 ) ] ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
         [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000001 ;
+            owl:minCardinality 0 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000001 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
         <http://purl.obolibrary.org/obo/BFO_0000023> ;
     skos:exactMatch dgo:GovernanceRole ;
     skos:inScheme dgo:management .
 
 dgo:DGO_00000023 a owl:Class ;
-    rdfs:label "term status boundary" ;
+    rdfs:label "status boundary" ;
     IAO:0000115 "The moment a term's status changed during a lifecycle process." ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
@@ -386,7 +386,7 @@ dgo:DGO_00000023 a owl:Class ;
             owl:allValuesFrom <http://purl.obolibrary.org/obo/BFO_0000015> ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
         <http://purl.obolibrary.org/obo/BFO_0000035> ;
-    skos:exactMatch dgo:TermStatusBoundary ;
+    skos:exactMatch dgo:StatusBoundary ;
     skos:inScheme dgo:glossary .
 
 dgo:DGO_00000005 a owl:Class ;
@@ -396,17 +396,17 @@ dgo:DGO_00000005 a owl:Class ;
             owl:minCardinality 0 ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
         [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
-        [ a owl:Restriction ;
             owl:allValuesFrom dgo:DGO_00000001 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
         [ a owl:Restriction ;
             owl:allValuesFrom [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 ) ] ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
@@ -428,7 +428,7 @@ dgo:DGO_00000005 a owl:Class ;
 
 dgo:DGO_00000001 a owl:Class ;
     rdfs:label "data governance" ;
-    IAO:0000115 "Words!" ;
+    IAO:0000115 "A process of governing an organization's data." ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:allValuesFrom <http://purl.obolibrary.org/obo/BFO_0000015> ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
@@ -443,6 +443,7 @@ IAO:0000030 a owl:Class ;
 
 dgo:DGO_00000003 a owl:Class ;
     rdfs:label "person" ;
+    IAO:0000115 "An individual human being." ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000030> ;
     skos:exactMatch <http://purl.obolibrary.org/obo/NCBITaxon_9606>,
         dgo:Person ;
@@ -450,7 +451,7 @@ dgo:DGO_00000003 a owl:Class ;
 
 dgo:DGO_00000004 a owl:Class ;
     rdfs:label "organization" ;
-    IAO:0000115 "A group of people organized for a governance purpose, e.g. a council or office." ;
+    IAO:0000115 "A group of people organized for a specific purpose or set of purposes within an organization." ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000027> ;
     skos:exactMatch dgo:Organization ;
     skos:inScheme dgo:management .
@@ -458,7 +459,7 @@ dgo:DGO_00000004 a owl:Class ;
 <http://purl.obolibrary.org/obo/BFO_0000050> a owl:ObjectProperty,
         owl:TransitiveProperty ;
     rdfs:label "part_of" ;
-    IAO:0000115 "Parthood (BFO part of). Transitive: a term in a subject area that is part of a domain is part of that domain too. Each class narrows the range with slot_usage (a governance process is part of a governance process, a term is part of a subject area, and so on)." ;
+    IAO:0000115 "Parthood (BFO part of). Transitive: a subject area that is part of a domain that is part of a glossary is part of that glossary too. Each class narrows the range with slot_usage (a term is part of a glossary, a subject area is part of a domain, a governance process is part of a broader process, and so on)." ;
     rdfs:range <http://purl.obolibrary.org/obo/BFO_0000001> ;
     skos:inScheme dgo:core .
 

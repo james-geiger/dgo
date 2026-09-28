@@ -85,26 +85,26 @@ classes:
 
   drafted:
     class_uri: dgo:DGO_00000024
-    is_a: term status boundary
+    is_a: status boundary
     description: >-
       The point where a term or modification has been first drafted.
 
   submitted for review:
     class_uri: dgo:DGO_00000025
-    is_a: term status boundary
+    is_a: status boundary
     description: >-
       The point where a term or modification has moved into being verified by a data steward.
 
   approved:
     class_uri: dgo:DGO_00000026
-    is_a: term status boundary
+    is_a: status boundary
     description: >-
       The point where a term or modification, resulting from a decision of the responsible data
       governance council, has been made final. 
     
   rejected:
     class_uri: dgo:DGO_00000027
-    is_a: term status boundary
+    is_a: status boundary
     description: >-
       The point where a term or modification, resulting from a decision of the responsible data
       governance council, is no longer under consideration. 
