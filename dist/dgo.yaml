@@ -265,8 +265,8 @@ slots:
     slot_uri: dgo:DGO_00000032
     range: glossary term
     inlined: false
-  semantic_types:
-    name: semantic_types
+  semantic_type:
+    name: semantic_type
     implements:
     - owl:AnnotationProperty
     description: 'The kind of thing the term denotes, given as the IRI of a class
@@ -276,7 +276,7 @@ slots:
     from_schema: https://w3id.org/dgo/glossary
     slot_uri: dgo:DGO_00000034
     range: uriorcurie
-    multivalued: true
+    multivalued: false
   replaced_by:
     name: replaced_by
     description: The term that succeeds this one, once it is deprecated.
@@ -532,7 +532,7 @@ classes:
     - broader
     - related
     - value_of
-    - semantic_types
+    - semantic_type
     - replaced_by
     - responsibilities
     slot_usage:
