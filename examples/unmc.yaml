@@ -10,7 +10,10 @@
 #    subject area (and through it the Research domain), is
 #    governed by the Research Administration Data Governance Committee, and was
 #    proposed on 2026-09-25, submitted for review on 2026-09-27, and approved on
-#    2026-09-28.
+#    2026-09-28. The Research Administration Data Governance Committee is its
+#    steward. It narrows the broader term "clinical study", later gained a cited
+#    definition source through a modification, and replaces the deprecated
+#    term "clinical investigation".
 
 # --- governance ---------------------------------------------------------------
 
@@ -35,6 +38,7 @@ people:
 organizations:
   - id: ex:cto
     label: Clinical Trials Office
+    email: cto@example.org
 
 council_roles:
   - type: dgo:DGO_00000006           # chair
@@ -60,11 +64,39 @@ subject_areas:
 glossary_terms:
   - id: ex:clinical-trial
     label: clinical trial
+    pref_label: Clinical Trial       # shown to readers when it differs from the label
+    alt_labels:
+      - interventional study
     definition: a study in which participants are prospectively assigned to a treatment
+    definition_source: https://grants.nih.gov/policy/clinical-trials/definition.htm
     part_of: ex:unmc-glossary        # containment: every term is part of exactly one glossary
     in_subject_area: ex:clinical-research   # classification; its domain is one step further
+    broader:
+      - ex:clinical-study
+    responsibilities:                # current assignments, held with respect to this term
+      - type: dgo:DGO_00000012       # owner
+        role_of: ex:cto
+      - type: dgo:DGO_00000013       # steward (a council can bear a governance role)
+        role_of: ex:ra-committee
 
-# --- how the term came to be --------------------------------------------------
+  - id: ex:clinical-study
+    label: clinical study
+    definition: a research study involving human participants
+    part_of: ex:unmc-glossary
+    in_subject_area: ex:clinical-research
+
+  - id: ex:clinical-investigation
+    label: clinical investigation
+    definition: a study of a treatment in human participants
+    part_of: ex:unmc-glossary
+    in_subject_area: ex:clinical-research
+    replaced_by: ex:clinical-trial   # its successor; deprecated by ex:clinical-investigation-deprecation
+
+definition_sources:              # id is the source's IRI; label describes it
+  - id: https://grants.nih.gov/policy/clinical-trials/definition.htm
+    label: NIH definition of a clinical trial
+
+# --- how the terms came to be -------------------------------------------------
 
 term_creations:
   - id: ex:clinical-trial-creation
@@ -72,18 +104,39 @@ term_creations:
     has_output: ex:clinical-trial
     part_of: ex:ra-dg                # created within RA data governance, so governed by its committee
 
-governance_roles:
-  - type: dgo:DGO_00000012           # owner
-    role_of: ex:cto
-    realized_in: ex:clinical-trial-creation
+term_modifications:
+  - id: ex:clinical-trial-modification
+    label: Addition of a definition source to "clinical trial"
+    has_output: ex:clinical-trial    # same term, same id: a modification changes it, not replaces it
+    part_of: ex:ra-dg
+
+term_deprecations:
+  - id: ex:clinical-investigation-deprecation
+    label: Deprecation of the term "clinical investigation"
+    has_output: ex:clinical-investigation
+    part_of: ex:ra-dg                # deprecated once this process reaches its approved boundary
 
 term_status_boundaries:        # quote dates: LinkML validation rejects unquoted YAML dates
-  - type: dgo:DGO_00000024           # term drafted (proposed)
+  - type: dgo:DGO_00000024           # drafted (proposed)
     part_of: ex:clinical-trial-creation
-    date: "2026-09-25"
-  - type: dgo:DGO_00000025           # term submitted for review
+    occurred_on: "2026-09-25"
+  - type: dgo:DGO_00000025           # submitted for review
     part_of: ex:clinical-trial-creation
-    date: "2026-09-27"
-  - type: dgo:DGO_00000026           # term approved
+    occurred_on: "2026-09-27"
+  - type: dgo:DGO_00000026           # approved
     part_of: ex:clinical-trial-creation
-    date: "2026-09-28"
+    occurred_on: "2026-09-28"
+
+  - type: dgo:DGO_00000024           # modification drafted
+    part_of: ex:clinical-trial-modification
+    occurred_on: "2026-10-05"
+  - type: dgo:DGO_00000026           # modification approved
+    part_of: ex:clinical-trial-modification
+    occurred_on: "2026-10-12"
+
+  - type: dgo:DGO_00000024           # deprecation drafted
+    part_of: ex:clinical-investigation-deprecation
+    occurred_on: "2026-10-05"
+  - type: dgo:DGO_00000026           # deprecation approved: the term is now deprecated
+    part_of: ex:clinical-investigation-deprecation
+    occurred_on: "2026-10-12"

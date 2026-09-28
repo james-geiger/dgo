@@ -2,17 +2,19 @@
 # requires-python = ">=3.11"
 # dependencies = ["linkml"]
 # ///
-"""Build dgo.owl.ttl from the LinkML schema. Run: uv run build.py"""
+"""Build dgo.owl.ttl and dist/dgo.yaml from the LinkML schema. Run: uv run build.py"""
 import re, sys
 from collections import defaultdict
 from pathlib import Path
 from linkml.generators.owlgen import OwlSchemaGenerator
+from linkml_runtime import SchemaView
+from linkml_runtime.dumpers import yaml_dumper
 import rdflib
 
 SCHEMA = "src/dgo.yaml"
 OUT = "dgo.owl.ttl"
-TEMPLATE = "src/dgo-template.yaml"
-DIST = "dist/dgo-template.yaml"
+DIST = "dist/dgo.yaml"
+LINKML_TYPES = "https://w3id.org/linkml/types"
 ID = re.compile(r"DGO_[0-9]+")
 IAO_DEF = "<http://purl.obolibrary.org/obo/IAO_0000115>"
 
@@ -159,5 +161,20 @@ for prop in set(g.subjects(rdflib.RDF.type, OWL.TransitiveProperty)):
 ttl = g.serialize(format="turtle")
 Path(OUT).write_text(ttl)
 print(f"✓ wrote {OUT} ({len(where)} ids checked)")
+
+# 4. single-file LinkML schema for downstream projects to import. The modules
+# are merged into one file; LinkML's built-in types, which the merge copies in,
+# are removed again and imported instead, so the file stays DGO-only.
+# Downstream imports it without the extension (LinkML appends .yaml).
+sv = SchemaView(SCHEMA)
+sv.merge_imports()
+merged = sv.schema
+for name in [t for t, d in merged.types.items() if d.from_schema == LINKML_TYPES]:
+    del merged.types[name]
+merged.imports = ["linkml:types"]
+Path(DIST).parent.mkdir(exist_ok=True)
+yaml_dumper.dump(merged, DIST)
+check = SchemaView(DIST)
+print(f"✓ wrote {DIST} ({len(check.all_classes())} classes, {len(check.all_slots())} slots)")
 
 sys.exit(0)
