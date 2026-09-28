@@ -78,7 +78,7 @@ classes:
     is_a: process boundary
     description: >-
       The moment a term's status changed during a lifecycle process.
-    slots: [type, part_of, date]
+    slots: [type, part_of, occurred_on]
     slot_usage:
       part_of: { range: term lifecycle process, required: true }
       date: { required: true }
@@ -120,7 +120,7 @@ slots:
     range: subject area
     inlined: false
 
-  date:
+  occurred_on:
     description: >-
       The date of an action.
     slot_uri: dcterms:date
