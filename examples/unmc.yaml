@@ -1,0 +1,89 @@
+# Two statements, written as LinkML instance data:
+#
+# 1. James Geiger is the chair of the Research Administration Data Governance
+#    Committee, which takes part in Research Administration Data Governance,
+#    a part of Data Governance at UNMC.
+#
+# 2. "Clinical trial" is a glossary term defined as "a study in which participants
+#    are prospectively assigned to a treatment". It is owned by the Clinical Trials
+#    Office, is part of the UNMC Business Glossary, is in the Clinical Research
+#    subject area (and through it the Research domain), is
+#    governed by the Research Administration Data Governance Committee, and was
+#    proposed on 2026-09-25, submitted for review on 2026-09-27, and approved on
+#    2026-09-28.
+
+# --- governance ---------------------------------------------------------------
+
+processes:
+  - id: ex:unmc-dg
+    label: Data Governance at UNMC
+  - id: ex:ra-dg
+    label: Research Administration Data Governance
+    part_of: ex:unmc-dg
+
+councils:
+  - id: ex:ra-committee
+    label: Research Administration Data Governance Committee
+    participates_in: ex:ra-dg        # the committee governs what happens in RA data governance
+    has_member:
+      - ex:james
+
+people:
+  - id: ex:james
+    label: James Geiger
+
+organizations:
+  - id: ex:cto
+    label: Clinical Trials Office
+
+council_roles:
+  - type: dgo:DGO_00000006           # chair
+    role_of: ex:james
+    realized_in: ex:ra-dg
+
+# --- glossary -----------------------------------------------------------------
+
+business_glossaries:
+  - id: ex:unmc-glossary
+    label: UNMC Business Glossary
+
+domains:
+  - id: ex:research
+    label: Research
+    part_of: ex:unmc-glossary
+
+subject_areas:
+  - id: ex:clinical-research
+    label: Clinical Research
+    part_of: ex:research
+
+glossary_terms:
+  - id: ex:clinical-trial
+    label: clinical trial
+    definition: a study in which participants are prospectively assigned to a treatment
+    part_of: ex:unmc-glossary        # containment: every term is part of exactly one glossary
+    in_subject_area: ex:clinical-research   # classification; its domain is one step further
+
+# --- how the term came to be --------------------------------------------------
+
+term_creations:
+  - id: ex:clinical-trial-creation
+    label: Creation of the term "clinical trial"
+    has_output: ex:clinical-trial
+    part_of: ex:ra-dg                # created within RA data governance, so governed by its committee
+
+governance_roles:
+  - type: dgo:DGO_00000012           # owner
+    role_of: ex:cto
+    realized_in: ex:clinical-trial-creation
+
+term_status_boundaries:        # quote dates: LinkML validation rejects unquoted YAML dates
+  - type: dgo:DGO_00000024           # term drafted (proposed)
+    part_of: ex:clinical-trial-creation
+    date: "2026-09-25"
+  - type: dgo:DGO_00000025           # term submitted for review
+    part_of: ex:clinical-trial-creation
+    date: "2026-09-27"
+  - type: dgo:DGO_00000026           # term approved
+    part_of: ex:clinical-trial-creation
+    date: "2026-09-28"

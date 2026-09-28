@@ -26,13 +26,14 @@ prefixes:
   ro:  http://purl.obolibrary.org/obo/RO_
   rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
 default_prefix: dgo
-default_range: string
 
 imports:
   - linkml:types
-  - management
 
 classes:
+
+  entity:
+    class_uri: bfo:0000001
 
   identifiable:
     mixin: true
@@ -48,6 +49,7 @@ slots:
   label:
     description: >-
       Words
+    implements: [owl:AnnotationProperty]
     slot_uri: rdfs:label
     required: true
 
@@ -58,3 +60,14 @@ slots:
     designates_type: true
     slot_uri: rdf:type
     range: uriorcurie
+
+  part_of:
+    description: >-
+      Parthood (BFO part of). Transitive: a term in a subject area that is part
+      of a domain is part of that domain too. Each class narrows the range with
+      slot_usage (a governance process is part of a governance process, a term
+      is part of a subject area, and so on).
+    slot_uri: bfo:0000050
+    range: entity
+    transitive: true
+    inlined: false

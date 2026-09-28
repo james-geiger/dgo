@@ -12,9 +12,12 @@ prefixes:
   dgo: https://w3id.org/dgo/
   linkml: https://w3id.org/linkml/
 default_prefix: dgo
+default_range: string
 
 imports:
   - modules/core
+  - modules/management
+  - modules/glossary
 
 annotations:
   vann:preferredNamespacePrefix: dgo

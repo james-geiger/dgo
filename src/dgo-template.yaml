@@ -1,0 +1,69 @@
+id: https://w3id.org/dgo/template
+name: dgo_template
+description: >-
+  Authoring template for downstream implementers. Imports the DGO ontology and
+  adds a document root plus registries so governance setups can be written as
+  LinkML instance data. Never run gen-owl on this file.
+prefixes:
+  ex: https://w3id.org/dgo/data/
+default_prefix: dgo
+imports:
+  - dgo
+
+classes:
+  GovernanceRecord:
+    tree_root: true
+    description: One document holding a governance setup and its registries.
+    slots: [processes, councils, people, organizations, council_roles, governance_roles,
+            business_glossaries, domains, subject_areas, glossary_terms, term_creations,
+            term_status_boundaries]
+
+slots:
+  processes:
+    range: data governance
+    multivalued: true
+    inlined_as_list: true
+  councils:
+    range: data governance council
+    multivalued: true
+    inlined_as_list: true
+  people:
+    range: person
+    multivalued: true
+    inlined_as_list: true
+  organizations:
+    range: organization
+    multivalued: true
+    inlined_as_list: true
+  council_roles:
+    range: council role
+    multivalued: true
+    inlined_as_list: true
+  governance_roles:
+    range: governance role
+    multivalued: true
+    inlined_as_list: true
+  domains:
+    range: domain
+    multivalued: true
+    inlined_as_list: true
+  subject_areas:
+    range: subject area
+    multivalued: true
+    inlined_as_list: true
+  glossary_terms:
+    range: glossary term
+    multivalued: true
+    inlined_as_list: true
+  term_creations:
+    range: term creation
+    multivalued: true
+    inlined_as_list: true
+  term_status_boundaries:
+    range: term status boundary
+    multivalued: true
+    inlined_as_list: true
+  business_glossaries:
+    range: business glossary
+    multivalued: true
+    inlined_as_list: true

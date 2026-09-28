@@ -19,90 +19,95 @@ classes:
     class_uri: bfo:0000015
 
   data governance:
+    class_uri: dgo:DGO_00000001
     is_a: process
     mixins: [identifiable]
     slots: [part_of]
+    slot_usage:
+      part_of: { range: process }
     description: >-
-      Words!
+      A process of governing an organization's data.
 
   data governance council:
-    class_uri: dgo:DGO_00000001
+    class_uri: dgo:DGO_00000002
     is_a: object aggregate
     mixins: [identifiable]
     slots: [participates_in, has_member]
     description: >-
-      Description.
+      A group whose collective role is to implement the data governance process to which it is assigned.
 
   person:
+    class_uri: dgo:DGO_00000003
     is_a: object
     mixins: [identifiable]
     # optional cross-walk without committing to the taxonomy:
     exact_mappings:
       - http://purl.obolibrary.org/obo/NCBITaxon_9606
     description: >-
+      An individual human being.
 
   organization:
+    class_uri: dgo:DGO_00000004
     is_a: object aggregate
     mixins: [identifiable]
     description: >-
-      A group of people organized for a governance purpose, e.g. a council or office.
-
+      A group of people organized for a specific purpose or set of purposes within an organization.
 
   council role:
     is_a: role
-    class_uri: dgo:DGO_00000002
+    class_uri: dgo:DGO_00000005
     slots: [type, role_of, realized_in]
     description: What facet of stewardship the holder is responsible for on a Governance Council.
 
   chair:
     is_a: council role
-    class_uri: dgo:DGO_00000003
+    class_uri: dgo:DGO_00000006
     description: Convenes the council and owns final sign-off on decisions.
 
   security steward:
     is_a: council role
-    class_uri: dgo:DGO_00000004
+    class_uri: dgo:DGO_00000007
     description: Advises on access controls and safeguarding of the data.
 
   ethics steward:
     is_a: council role
-    class_uri: dgo:DGO_00000005
+    class_uri: dgo:DGO_00000008
     description: Advises on ethical use and transparency across the organization.
 
   documentation steward:
     is_a: council role
-    class_uri: dgo:DGO_00000006
+    class_uri: dgo:DGO_00000009
     description: Keeps definitions, lineage, and decisions documented.
 
   compliance steward:
     is_a: council role
-    class_uri: dgo:DGO_00000007
+    class_uri: dgo:DGO_00000010
     description: Advises on regulatory and policy conformance.
 
   governance role:
     is_a: role
-    class_uri: dgo:DGO_00000008
+    class_uri: dgo:DGO_00000011
     slots: [type, role_of, realized_in]
     description: What an individual or entity is responsible for with respect to a managed term.
 
   owner:
     is_a: governance role
-    class_uri: dgo:DGO_00000009
+    class_uri: dgo:DGO_00000012
     description: Accountable for approving data definition.
 
   steward:
     is_a: governance role
-    class_uri: dgo:DGO_00000010
+    class_uri: dgo:DGO_00000013
     description: Responsible for quality of implementing data.
 
   custodian:
     is_a: governance role
-    class_uri: dgo:DGO_00000011
+    class_uri: dgo:DGO_00000014
     description: Consulted on the collection, storage, and management of data.
 
   subject matter expert:
     is_a: governance role
-    class_uri: dgo:DGO_00000012
+    class_uri: dgo:DGO_00000015
     description: Consulted on meaning and use of data in practice.
 
 slots:
@@ -134,8 +139,3 @@ slots:
     slot_uri: bfo:0000055
     range: data governance
 
-  part_of:
-    description: A larger governance process this one is a part of.
-    slot_uri: bfo:0000050
-    range: data governance
-    inlined: false

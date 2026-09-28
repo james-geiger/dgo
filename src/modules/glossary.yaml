@@ -1,0 +1,151 @@
+id: https://w3id.org/dgo/glossary
+name: dgo_glossary
+default_prefix: dgo
+imports:
+  - core
+  - management
+
+classes:
+
+  information content entity:
+    class_uri: iao:0000030
+
+  process boundary:
+    class_uri: bfo:0000035
+
+  domain:
+    class_uri: dgo:DGO_00000016
+    is_a: information content entity
+    description: >-
+      A group of glossary terms that relates to a particular section or definable .
+    slots: [id, label, part_of]
+    slot_usage:
+      part_of: { range: business glossary }
+
+  subject area:
+    class_uri: dgo:DGO_00000017
+    is_a: information content entity
+    title: Subject Area
+    description: >-
+      A governed grouping of terms which is more specific.
+    slots: [id, label, part_of]
+    slot_usage:
+      part_of: { range: domain, required: true }
+
+  business glossary:
+    class_uri: dgo:DGO_00000018
+    is_a: information content entity
+    description: >-
+      A glossary is a grouping of terms.
+    slots: [id, label]
+
+  glossary term:
+    class_uri: dgo:DGO_00000019
+    is_a: information content entity
+    description: >-
+      A governed business term that relates, in whole or in part, to data that exists within an organization's governance.
+    slots: [id, label, definition, part_of, in_subject_area]
+    slot_usage:
+      part_of: { range: business glossary, required: true }
+      in_subject_area: { required: true }
+
+  term lifecycle process:
+    class_uri: dgo:DGO_00000020
+    is_a: data governance
+    description: >-
+      A governance process that brings a business term into, or changes it within,
+      the business glossary.
+    slots: [has_output, has_participant]
+    slot_usage:
+      has_output: { required: true }
+  
+  term creation:
+    class_uri: dgo:DGO_00000021
+    is_a: term lifecycle process
+    description: >-
+      The process by which a new governed business term is proposed, validated, and approved for publishing in the 
+      business glossary.
+
+  term modification:
+    class_uri: dgo:DGO_00000022
+    is_a: term lifecycle process
+    description: >-
+      The process by which an extant governed business term is proposed to be modified, validated, and approved for publishing in the 
+      business glossary.
+
+  status boundary:
+    class_uri: dgo:DGO_00000023
+    is_a: process boundary
+    description: >-
+      The moment a term's status changed during a lifecycle process.
+    slots: [type, part_of, date]
+    slot_usage:
+      part_of: { range: term lifecycle process, required: true }
+      date: { required: true }
+
+  drafted:
+    class_uri: dgo:DGO_00000024
+    is_a: term status boundary
+    description: >-
+      The point where a term or modification has been first drafted.
+
+  submitted for review:
+    class_uri: dgo:DGO_00000025
+    is_a: term status boundary
+    description: >-
+      The point where a term or modification has moved into being verified by a data steward.
+
+  approved:
+    class_uri: dgo:DGO_00000026
+    is_a: term status boundary
+    description: >-
+      The point where a term or modification, resulting from a decision of the responsible data
+      governance council, has been made final. 
+    
+  rejected:
+    class_uri: dgo:DGO_00000027
+    is_a: term status boundary
+    description: >-
+      The point where a term or modification, resulting from a decision of the responsible data
+      governance council, is no longer under consideration. 
+
+slots:
+
+  in_subject_area:
+    description: >-
+      The subject area this term is classified under. Classification, not
+      containment: a term is part of its glossary, never of a subject area.
+      (RO's "member of" is a sub-property of part of, so it isn't used here.)
+    slot_uri: dgo:DGO_00000029
+    range: subject area
+    inlined: false
+
+  date:
+    description: >-
+      The date of an action.
+    slot_uri: dcterms:date
+    range: date
+    implements: [owl:AnnotationProperty]
+
+  definition:
+    slot_uri: dgo:DGO_00000028
+    close_mappings: [iao:0000115]   
+    description: The meaning of the term.
+    range: string
+    required: true
+
+  has_output:
+    description: The term this creation process produced.
+    slot_uri: ro:0002234
+    range: glossary term
+    inlined: false
+
+  has_participant:
+    description: Who took part in this process.
+    slot_uri: ro:0000057
+    multivalued: true
+    inlined: false
+    any_of:
+      - range: person
+      - range: organization
+      - range: data governance council
