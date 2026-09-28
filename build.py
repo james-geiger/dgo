@@ -130,6 +130,11 @@ def upper_ancestor(cls):
         seen.add(c)
         queue += [p for p in g.objects(c, RDFS.subClassOf) if not isinstance(p, rdflib.BNode)]
     return None
+def min_cardinality(restriction) -> int:
+    """The restriction's owl:minCardinality, or 0 if it has none."""
+    value = g.value(restriction, OWL.minCardinality)
+    return int(value.toPython()) if isinstance(value, rdflib.Literal) else 0
+
 for prop in set(g.subjects(rdflib.RDF.type, OWL.TransitiveProperty)):
     for r in list(g.subjects(OWL.onProperty, prop)):
         filler = g.value(r, OWL.allValuesFrom)
@@ -137,8 +142,8 @@ for prop in set(g.subjects(rdflib.RDF.type, OWL.TransitiveProperty)):
             continue
         for cls in list(g.subjects(RDFS.subClassOf, r)):
             required = any(
-                (cls, RDFS.subClassOf, m) in g and int(g.value(m, OWL.minCardinality)) > 0
-                for m in g.subjects(OWL.onProperty, prop) if g.value(m, OWL.minCardinality) is not None)
+                (cls, RDFS.subClassOf, m) in g and min_cardinality(m) > 0
+                for m in g.subjects(OWL.onProperty, prop))
             if required:
                 some = rdflib.BNode()
                 g.add((some, rdflib.RDF.type, OWL.Restriction))
