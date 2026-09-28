@@ -1,0 +1,747 @@
+name: dgo_template
+description: Authoring template for downstream implementers. Imports the DGO ontology
+  and adds a document root plus registries so governance setups can be written as
+  LinkML instance data. Never run gen-owl on this file.
+id: https://w3id.org/dgo/template
+prefixes:
+  ex:
+    prefix_prefix: ex
+    prefix_reference: https://w3id.org/dgo/data/
+  linkml:
+    prefix_prefix: linkml
+    prefix_reference: https://w3id.org/linkml/
+  xsd:
+    prefix_prefix: xsd
+    prefix_reference: http://www.w3.org/2001/XMLSchema#
+  shex:
+    prefix_prefix: shex
+    prefix_reference: http://www.w3.org/ns/shex#
+  schema:
+    prefix_prefix: schema
+    prefix_reference: http://schema.org/
+  dgo:
+    prefix_prefix: dgo
+    prefix_reference: https://w3id.org/dgo/
+  skos:
+    prefix_prefix: skos
+    prefix_reference: http://www.w3.org/2004/02/skos/core#
+  dcterms:
+    prefix_prefix: dcterms
+    prefix_reference: http://purl.org/dc/terms/
+  org:
+    prefix_prefix: org
+    prefix_reference: http://www.w3.org/ns/org#
+  prov:
+    prefix_prefix: prov
+    prefix_reference: http://www.w3.org/ns/prov#
+  foaf:
+    prefix_prefix: foaf
+    prefix_reference: http://xmlns.com/foaf/0.1/
+  vann:
+    prefix_prefix: vann
+    prefix_reference: http://purl.org/vocab/vann/
+  bibo:
+    prefix_prefix: bibo
+    prefix_reference: http://purl.org/ontology/bibo/
+  rdfs:
+    prefix_prefix: rdfs
+    prefix_reference: http://www.w3.org/2000/01/rdf-schema#
+  obo:
+    prefix_prefix: obo
+    prefix_reference: http://purl.obolibrary.org/obo/
+  bfo:
+    prefix_prefix: bfo
+    prefix_reference: http://purl.obolibrary.org/obo/BFO_
+  obi:
+    prefix_prefix: obi
+    prefix_reference: http://purl.obolibrary.org/obo/OBI_
+  iao:
+    prefix_prefix: iao
+    prefix_reference: http://purl.obolibrary.org/obo/IAO_
+  owl:
+    prefix_prefix: owl
+    prefix_reference: http://www.w3.org/2002/07/owl#
+  ro:
+    prefix_prefix: ro
+    prefix_reference: http://purl.obolibrary.org/obo/RO_
+  rdf:
+    prefix_prefix: rdf
+    prefix_reference: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+default_prefix: dgo
+types:
+  string:
+    name: string
+    description: A character string
+    notes:
+    - In RDF serializations, a slot with range of string is treated as a literal or
+      type xsd:string. If you are authoring schemas in LinkML YAML, the type is referenced
+      with the lower case "string".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:Text
+    base: str
+    uri: xsd:string
+  integer:
+    name: integer
+    description: An integer
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "integer".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:Integer
+    base: int
+    uri: xsd:integer
+  boolean:
+    name: boolean
+    description: A binary (true or false) value
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "boolean".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:Boolean
+    base: Bool
+    uri: xsd:boolean
+    repr: bool
+  float:
+    name: float
+    description: A real number that conforms to the xsd:float specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "float".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:float
+  double:
+    name: double
+    description: A real number that conforms to the xsd:double specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "double".
+    from_schema: https://w3id.org/linkml/types
+    close_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:double
+  decimal:
+    name: decimal
+    description: A real number with arbitrary precision that conforms to the xsd:decimal
+      specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "decimal".
+    from_schema: https://w3id.org/linkml/types
+    broad_mappings:
+    - schema:Number
+    base: Decimal
+    uri: xsd:decimal
+  time:
+    name: time
+    description: A time object represents a (local) time of day, independent of any
+      particular day
+    notes:
+    - URI is dateTime because OWL reasoners do not work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "time".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:Time
+    base: XSDTime
+    uri: xsd:time
+    repr: str
+  date:
+    name: date
+    description: a date (year, month and day) in an idealized calendar
+    notes:
+    - URI is dateTime because OWL reasoners don't work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:Date
+    base: XSDDate
+    uri: xsd:date
+    repr: str
+  datetime:
+    name: datetime
+    description: The combination of a date and time
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "datetime".
+    from_schema: https://w3id.org/linkml/types
+    exact_mappings:
+    - schema:DateTime
+    base: XSDDateTime
+    uri: xsd:dateTime
+    repr: str
+  date_or_datetime:
+    name: date_or_datetime
+    description: Either a date or a datetime
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date_or_datetime".
+    from_schema: https://w3id.org/linkml/types
+    base: str
+    uri: linkml:DateOrDatetime
+    repr: str
+  uriorcurie:
+    name: uriorcurie
+    description: a URI or a CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uriorcurie".
+    from_schema: https://w3id.org/linkml/types
+    base: URIorCURIE
+    uri: xsd:anyURI
+    repr: str
+  curie:
+    name: curie
+    conforms_to: https://www.w3.org/TR/curie/
+    description: a compact URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "curie".
+    comments:
+    - in RDF serializations this MUST be expanded to a URI
+    - in non-RDF serializations MAY be serialized as the compact representation
+    from_schema: https://w3id.org/linkml/types
+    base: Curie
+    uri: xsd:string
+    repr: str
+  uri:
+    name: uri
+    conforms_to: https://www.ietf.org/rfc/rfc3987.txt
+    description: a complete URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uri".
+    comments:
+    - in RDF serializations a slot with range of uri is treated as a literal or type
+      xsd:anyURI unless it is an identifier or a reference to an identifier, in which
+      case it is translated directly to a node
+    from_schema: https://w3id.org/linkml/types
+    close_mappings:
+    - schema:URL
+    base: URI
+    uri: xsd:anyURI
+    repr: str
+  ncname:
+    name: ncname
+    description: Prefix part of CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "ncname".
+    from_schema: https://w3id.org/linkml/types
+    base: NCName
+    uri: xsd:string
+    repr: str
+  objectidentifier:
+    name: objectidentifier
+    description: A URI or CURIE that represents an object in the model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "objectidentifier".
+    comments:
+    - Used for inheritance and type checking
+    from_schema: https://w3id.org/linkml/types
+    base: ElementIdentifier
+    uri: shex:iri
+    repr: str
+  nodeidentifier:
+    name: nodeidentifier
+    description: A URI, CURIE or BNODE that represents a node in a model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "nodeidentifier".
+    from_schema: https://w3id.org/linkml/types
+    base: NodeIdentifier
+    uri: shex:nonLiteral
+    repr: str
+  jsonpointer:
+    name: jsonpointer
+    conforms_to: https://datatracker.ietf.org/doc/html/rfc6901
+    description: A string encoding a JSON Pointer. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to a valid object within the current
+      instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpointer".
+    from_schema: https://w3id.org/linkml/types
+    base: str
+    uri: xsd:string
+    repr: str
+  jsonpath:
+    name: jsonpath
+    conforms_to: https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html
+    description: A string encoding a JSON Path. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to zero or more valid objects within
+      the current instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpath".
+    from_schema: https://w3id.org/linkml/types
+    base: str
+    uri: xsd:string
+    repr: str
+  sparqlpath:
+    name: sparqlpath
+    conforms_to: https://www.w3.org/TR/sparql11-query/#propertypaths
+    description: A string encoding a SPARQL Property Path. The value of the string
+      MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects
+      within the current instance document when encoded as RDF.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "sparqlpath".
+    from_schema: https://w3id.org/linkml/types
+    base: str
+    uri: xsd:string
+    repr: str
+enums:
+  TermStatus:
+    name: TermStatus
+    description: How far a term has moved through review.
+    from_schema: https://w3id.org/dgo/glossary
+    permissible_values:
+      draft:
+        text: draft
+        description: Written but not yet checked against real data.
+        meaning: dgo:status/draft
+      in_review:
+        text: in_review
+        description: Steward and SME are validating it. Not citable in reporting.
+        meaning: dgo:status/in-review
+      approved:
+        text: approved
+        description: Signed off. Reports may cite it.
+        meaning: dgo:status/approved
+      deprecated:
+        text: deprecated
+        description: Superseded. Retained for historical reconciliation only.
+        meaning: dgo:status/deprecated
+slots:
+  processes:
+    name: processes
+    from_schema: https://w3id.org/dgo/template
+    range: data governance
+    multivalued: true
+    inlined_as_list: true
+  councils:
+    name: councils
+    from_schema: https://w3id.org/dgo/template
+    range: data governance council
+    multivalued: true
+    inlined_as_list: true
+  people:
+    name: people
+    from_schema: https://w3id.org/dgo/template
+    range: person
+    multivalued: true
+    inlined_as_list: true
+  organizations:
+    name: organizations
+    from_schema: https://w3id.org/dgo/template
+    range: organization
+    multivalued: true
+    inlined_as_list: true
+  council_roles:
+    name: council_roles
+    from_schema: https://w3id.org/dgo/template
+    range: council role
+    multivalued: true
+    inlined_as_list: true
+  governance_roles:
+    name: governance_roles
+    from_schema: https://w3id.org/dgo/template
+    range: governance role
+    multivalued: true
+    inlined_as_list: true
+  id:
+    name: id
+    description: The term's globally unique, persistent IRI. Its stable identity.
+    from_schema: https://w3id.org/dgo/core
+    identifier: true
+    range: uriorcurie
+  label:
+    name: label
+    description: Words
+    from_schema: https://w3id.org/dgo/core
+    slot_uri: rdfs:label
+    required: true
+  type:
+    name: type
+    description: The specific subclass this object instantiates, given as its class
+      IRI (e.g. a chair). Lets instance data name a subclass; emitted as rdf:type.
+    from_schema: https://w3id.org/dgo/core
+    slot_uri: rdf:type
+    designates_type: true
+    range: uriorcurie
+  pref_label:
+    name: pref_label
+    description: The one preferred, human-readable name for the term.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:prefLabel
+  alt_labels:
+    name: alt_labels
+    description: Other names people actually use for this term.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:altLabel
+    multivalued: true
+  definition:
+    name: definition
+    description: The governed meaning of the term.
+    from_schema: https://w3id.org/dgo/glossary
+    required: true
+  definition_source:
+    name: definition_source
+    description: Where the wording came from, if it was adopted rather than written
+      here.
+    from_schema: https://w3id.org/dgo/glossary
+    range: DefinitionSource
+  source_uri:
+    name: source_uri
+    description: The record or persistent identifier of the source.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dcterms:source
+    range: uriorcurie
+    required: true
+  source_label:
+    name: source_label
+    description: The human-readable description of the source.
+    from_schema: https://w3id.org/dgo/glossary
+  in_subject_area:
+    name: in_subject_area
+    description: The subject area (concept scheme) this term belongs to.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:inScheme
+    range: SubjectArea
+  broader:
+    name: broader
+    description: 'A term that generalizes this one: genus/subtype (is-a). Not to be
+      used  with determinable value to attribute relationsips; use value_of.'
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:broader
+    range: Term
+    multivalued: true
+  value_of:
+    name: value_of
+    description: For a term that is a determinate value, the attribute for which it
+      is a permissible value.  This is the controlled-value relation, distinct from
+      broader (generalization).
+    from_schema: https://w3id.org/dgo/glossary
+    range: Term
+  related:
+    name: related
+    description: Another governed term that is conceptually associated with this one,
+      where neither is broader nor narrower than the other.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:related
+    range: Term
+    multivalued: true
+  status:
+    name: status
+    description: How far the term has moved through review.
+    from_schema: https://w3id.org/dgo/glossary
+    range: TermStatus
+    required: true
+  exact_match:
+    name: exact_match
+    description: An external concept that means the same thing.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:exactMatch
+    range: uriorcurie
+    multivalued: true
+  close_match:
+    name: close_match
+    description: An external concept that is similar but not interchangeable.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:closeMatch
+    range: uriorcurie
+    multivalued: true
+  replaced_by:
+    name: replaced_by
+    description: For deprecated terms, the term that supersedes this one.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dcterms:isReplacedBy
+    range: Term
+  email:
+    name: email
+    description: Email address. On an office this is a shared mailbox; on a person
+      it is their own address.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: foaf:mbox
+  name:
+    name: name
+    description: A person's full name.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: foaf:name
+    required: true
+  title:
+    name: title
+    description: A person's job title, e.g. "Research Data Manager". Presentation
+      only.
+    from_schema: https://w3id.org/dgo/glossary
+  contacts:
+    name: contacts
+    description: People who currently staff this office. A directory for readers --
+      who to ask for -- not a transfer of accountability, which stays with the office.
+      The same person may staff more than one office.
+    from_schema: https://w3id.org/dgo/glossary
+    range: person
+    multivalued: true
+    inlined: false
+  category:
+    name: category
+    description: Discriminates agent subtypes within the shared agents registry. Value
+      is the subtype's class IRI, e.g. org:Organization for a council.
+    from_schema: https://w3id.org/dgo/glossary
+    designates_type: true
+    range: uriorcurie
+  subject_areas:
+    name: subject_areas
+    description: The subject areas declared in a validation document.
+    from_schema: https://w3id.org/dgo/glossary
+    range: SubjectArea
+    multivalued: true
+    inlined_as_list: true
+  terms:
+    name: terms
+    description: The terms declared in a validation document.
+    from_schema: https://w3id.org/dgo/glossary
+    range: Term
+    multivalued: true
+    inlined_as_list: true
+  member:
+    name: member
+    description: A person who holds a seat on a stewardship council.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: org:member
+    range: person
+  council_role:
+    name: council_role
+    description: The facet of stewardship a council seat is responsible for.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: org:role
+    range: council role
+  participates_in:
+    name: participates_in
+    description: The data governance process this council carries out.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: ro:0000056
+    range: data governance
+    inlined: false
+  has_member:
+    name: has_member
+    description: A person or organization that is a member of this council.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: ro:0002351
+    multivalued: true
+    inlined: false
+    any_of:
+    - range: person
+    - range: organization
+  role_of:
+    name: role_of
+    description: The council member (person or organization) that bears this role.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: ro:0000081
+    any_of:
+    - range: person
+    - range: organization
+  realized_in:
+    name: realized_in
+    description: The governance process in which this role is realized.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: bfo:0000055
+    range: data governance
+  part_of:
+    name: part_of
+    description: A larger governance process this one is a part of.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: bfo:0000050
+    range: data governance
+    inlined: false
+classes:
+  GovernanceRecord:
+    name: GovernanceRecord
+    description: One document holding a governance setup and its registries.
+    from_schema: https://w3id.org/dgo/template
+    slots:
+    - processes
+    - councils
+    - people
+    - organizations
+    - council_roles
+    - governance_roles
+    tree_root: true
+  identifiable:
+    name: identifiable
+    from_schema: https://w3id.org/dgo/core
+    mixin: true
+    slots:
+    - id
+    - label
+  Process:
+    name: Process
+    from_schema: https://w3id.org/dgo/glossary
+    class_uri: bfo:0000015
+  InformationContentEntity:
+    name: InformationContentEntity
+    from_schema: https://w3id.org/dgo/glossary
+    class_uri: iao:0000030
+  Domain:
+    name: Domain
+    description: Descritpion.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: Process
+  SubjectArea:
+    name: SubjectArea
+    description: A governed grouping of terms, owned end to end by one office.
+    title: Subject Area
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: Process
+  Term:
+    name: Term
+    description: One governed business term. Exactly one definition, one accountable
+      definition owner, and a status that says how far it has moved through review.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: InformationContentEntity
+  DefinitionSource:
+    name: DefinitionSource
+    description: words
+    from_schema: https://w3id.org/dgo/glossary
+    slots:
+    - source_uri
+    - source_label
+  role:
+    name: role
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000023
+  object:
+    name: object
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000030
+  object aggregate:
+    name: object aggregate
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000027
+  process:
+    name: process
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000015
+  data governance:
+    name: data governance
+    description: Words!
+    from_schema: https://w3id.org/dgo/management
+    is_a: process
+    mixins:
+    - identifiable
+    slots:
+    - part_of
+  data governance council:
+    name: data governance council
+    description: Description.
+    from_schema: https://w3id.org/dgo/management
+    is_a: object aggregate
+    mixins:
+    - identifiable
+    slots:
+    - participates_in
+    - has_member
+    class_uri: dgo:DGO_00000001
+  person:
+    name: person
+    description: ''
+    from_schema: https://w3id.org/dgo/management
+    exact_mappings:
+    - http://purl.obolibrary.org/obo/NCBITaxon_9606
+    is_a: object
+    mixins:
+    - identifiable
+  organization:
+    name: organization
+    description: A group of people organized for a governance purpose, e.g. a council
+      or office.
+    from_schema: https://w3id.org/dgo/management
+    is_a: object aggregate
+    mixins:
+    - identifiable
+  council role:
+    name: council role
+    description: What facet of stewardship the holder is responsible for on a Governance
+      Council.
+    from_schema: https://w3id.org/dgo/management
+    is_a: role
+    slots:
+    - type
+    - role_of
+    - realized_in
+    class_uri: dgo:DGO_00000002
+  chair:
+    name: chair
+    description: Convenes the council and owns final sign-off on decisions.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000003
+  security steward:
+    name: security steward
+    description: Advises on access controls and safeguarding of the data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000004
+  ethics steward:
+    name: ethics steward
+    description: Advises on ethical use and transparency across the organization.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000005
+  documentation steward:
+    name: documentation steward
+    description: Keeps definitions, lineage, and decisions documented.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000006
+  compliance steward:
+    name: compliance steward
+    description: Advises on regulatory and policy conformance.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000007
+  governance role:
+    name: governance role
+    description: What an individual or entity is responsible for with respect to a
+      managed term.
+    from_schema: https://w3id.org/dgo/management
+    is_a: role
+    slots:
+    - type
+    - role_of
+    - realized_in
+    class_uri: dgo:DGO_00000008
+  owner:
+    name: owner
+    description: Accountable for approving data definition.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000009
+  steward:
+    name: steward
+    description: Responsible for quality of implementing data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000010
+  custodian:
+    name: custodian
+    description: Consulted on the collection, storage, and management of data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000011
+  subject matter expert:
+    name: subject matter expert
+    description: Consulted on meaning and use of data in practice.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000012
+source_file: src/dgo-template.yaml

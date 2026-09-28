@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["linkml"]
 # ///
-"""Build dgo.owl.ttl and dist/dgo.yaml from the LinkML schema. Run: uv run build.py"""
+"""Build dist/dgo.owl.ttl and dist/dgo.yaml from the LinkML schema. Run: uv run build.py"""
 import re, sys
 from collections import defaultdict
 from pathlib import Path
@@ -12,7 +12,7 @@ from linkml_runtime.dumpers import yaml_dumper
 import rdflib
 
 SCHEMA = "src/dgo.yaml"
-OUT = "dgo.owl.ttl"
+OUT = "dist/dgo.owl.ttl"
 DIST = "dist/dgo.yaml"
 LINKML_TYPES = "https://w3id.org/linkml/types"
 ID = re.compile(r"DGO_[0-9]+")
@@ -159,6 +159,7 @@ for prop in set(g.subjects(rdflib.RDF.type, OWL.TransitiveProperty)):
     drop_restrictions(prop, keep=lambda r: not any((r, c, None) in g for c in CARD)
                       and ((r, OWL.someValuesFrom, None) in g or (r, OWL.allValuesFrom, None) in g))
 ttl = g.serialize(format="turtle")
+Path(OUT).parent.mkdir(exist_ok=True)
 Path(OUT).write_text(ttl)
 print(f"✓ wrote {OUT} ({len(where)} ids checked)")
 
@@ -172,7 +173,6 @@ merged = sv.schema
 for name in [t for t, d in merged.types.items() if d.from_schema == LINKML_TYPES]:
     del merged.types[name]
 merged.imports = ["linkml:types"]
-Path(DIST).parent.mkdir(exist_ok=True)
 yaml_dumper.dump(merged, DIST)
 check = SchemaView(DIST)
 print(f"✓ wrote {DIST} ({len(check.all_classes())} classes, {len(check.all_slots())} slots)")

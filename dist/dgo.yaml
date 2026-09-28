@@ -1,0 +1,624 @@
+name: data_governance_ontology
+annotations:
+  vann:preferredNamespacePrefix:
+    tag: vann:preferredNamespacePrefix
+    value: dgo
+  vann:preferredNamespaceUri:
+    tag: vann:preferredNamespaceUri
+    value: https://w3id.org/dgo/
+  owl:versionInfo:
+    tag: owl:versionInfo
+    value: 0.1.0
+  owl:imports:
+    tag: owl:imports
+    value: http://purl.obolibrary.org/obo/bfo.owl http://purl.obolibrary.org/obo/iao.owl
+  dcterms:description:
+    tag: dcterms:description
+    value: 'An ontology for data governance: business terms, subject areas,  stewardship
+      roles and responsibilities, term-lifecycle status, data classification, and
+      semantic typing.'
+  dcterms:created:
+    tag: dcterms:created
+    value: '2026-09-24'
+  dcterms:creator:
+    tag: dcterms:creator
+    value: James Geiger
+  dcterms:publisher:
+    tag: dcterms:publisher
+    value: James Geiger
+  dcterms:issued:
+    tag: dcterms:issued
+    value: '2026-09-24'
+  dcterms:bibliographicCitation:
+    tag: dcterms:bibliographicCitation
+    value: Geiger, J.M. (2026). An ontology for data governance. Data Governance ontology,
+      v0.1.0. https://w3id.org/dgo/
+  bibo:status:
+    tag: bibo:status
+    value: specification draft
+description: 'An ontology for data governance: business terms, subject areas,  stewardship
+  roles and responsibilities, term-lifecycle status, data classification, and semantic
+  typing.'
+title: Data Governance Ontology
+id: https://w3id.org/dgo/
+version: 0.1.0
+imports:
+- linkml:types
+license: https://w3id.org/dgo/LICENSE
+prefixes:
+  dgo:
+    prefix_prefix: dgo
+    prefix_reference: https://w3id.org/dgo/
+  linkml:
+    prefix_prefix: linkml
+    prefix_reference: https://w3id.org/linkml/
+  skos:
+    prefix_prefix: skos
+    prefix_reference: http://www.w3.org/2004/02/skos/core#
+  dcterms:
+    prefix_prefix: dcterms
+    prefix_reference: http://purl.org/dc/terms/
+  org:
+    prefix_prefix: org
+    prefix_reference: http://www.w3.org/ns/org#
+  prov:
+    prefix_prefix: prov
+    prefix_reference: http://www.w3.org/ns/prov#
+  foaf:
+    prefix_prefix: foaf
+    prefix_reference: http://xmlns.com/foaf/0.1/
+  schema:
+    prefix_prefix: schema
+    prefix_reference: http://schema.org/
+  vann:
+    prefix_prefix: vann
+    prefix_reference: http://purl.org/vocab/vann/
+  bibo:
+    prefix_prefix: bibo
+    prefix_reference: http://purl.org/ontology/bibo/
+  rdfs:
+    prefix_prefix: rdfs
+    prefix_reference: http://www.w3.org/2000/01/rdf-schema#
+  obo:
+    prefix_prefix: obo
+    prefix_reference: http://purl.obolibrary.org/obo/
+  bfo:
+    prefix_prefix: bfo
+    prefix_reference: http://purl.obolibrary.org/obo/BFO_
+  obi:
+    prefix_prefix: obi
+    prefix_reference: http://purl.obolibrary.org/obo/OBI_
+  iao:
+    prefix_prefix: iao
+    prefix_reference: http://purl.obolibrary.org/obo/IAO_
+  owl:
+    prefix_prefix: owl
+    prefix_reference: http://www.w3.org/2002/07/owl#
+  ro:
+    prefix_prefix: ro
+    prefix_reference: http://purl.obolibrary.org/obo/RO_
+  rdf:
+    prefix_prefix: rdf
+    prefix_reference: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  xsd:
+    prefix_prefix: xsd
+    prefix_reference: http://www.w3.org/2001/XMLSchema#
+  shex:
+    prefix_prefix: shex
+    prefix_reference: http://www.w3.org/ns/shex#
+default_prefix: dgo
+default_range: string
+slots:
+  id:
+    name: id
+    description: The term's globally unique, persistent IRI. Its stable identity.
+    from_schema: https://w3id.org/dgo/core
+    identifier: true
+    range: uriorcurie
+  label:
+    name: label
+    implements:
+    - owl:AnnotationProperty
+    description: Words
+    from_schema: https://w3id.org/dgo/core
+    slot_uri: rdfs:label
+    required: true
+  type:
+    name: type
+    description: The specific subclass this object instantiates, given as its class
+      IRI (e.g. a chair). Lets instance data name a subclass; emitted as rdf:type.
+    from_schema: https://w3id.org/dgo/core
+    slot_uri: rdf:type
+    designates_type: true
+    range: uriorcurie
+  part_of:
+    name: part_of
+    description: 'Parthood (BFO part of). Transitive: a subject area that is part
+      of a domain that is part of a glossary is part of that glossary too. Each class
+      narrows the range with slot_usage (a term is part of a glossary, a subject area
+      is part of a domain, a governance process is part of a broader process, and
+      so on).'
+    from_schema: https://w3id.org/dgo/core
+    slot_uri: bfo:0000050
+    transitive: true
+    range: entity
+    inlined: false
+  participates_in:
+    name: participates_in
+    description: The data governance process this council carries out.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: ro:0000056
+    range: data governance
+    inlined: false
+  has_member:
+    name: has_member
+    description: A person or organization that is a member of this council.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: ro:0002351
+    multivalued: true
+    inlined: false
+    any_of:
+    - range: person
+    - range: organization
+  role_of:
+    name: role_of
+    description: The person, organization, or council that bears this role.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: ro:0000081
+    any_of:
+    - range: person
+    - range: organization
+    - range: data governance council
+  realized_in:
+    name: realized_in
+    description: The governance process in which this role is realized.
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: bfo:0000055
+    range: data governance
+  email:
+    name: email
+    description: 'A contact email address, as a plain string. (Not foaf:mbox, which
+      expects a mailto: IRI.)'
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: schema:email
+    range: string
+  title:
+    name: title
+    description: A person's job title. (Not foaf:title, which is an honorific such
+      as Dr.)
+    from_schema: https://w3id.org/dgo/management
+    slot_uri: schema:jobTitle
+    range: string
+  in_subject_area:
+    name: in_subject_area
+    description: 'The subject area this term is classified under. Classification,
+      not containment: a term is part of its glossary, never of a subject area. (RO''s
+      "member of" is a sub-property of part of, so it isn''t used here.)'
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dgo:DGO_00000029
+    range: subject area
+    inlined: false
+  occurred_on:
+    name: occurred_on
+    implements:
+    - owl:AnnotationProperty
+    description: The date of an action.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dcterms:date
+    range: date
+  definition:
+    name: definition
+    description: The meaning of the term.
+    from_schema: https://w3id.org/dgo/glossary
+    close_mappings:
+    - iao:0000115
+    slot_uri: dgo:DGO_00000028
+    range: string
+    required: true
+  pref_label:
+    name: pref_label
+    implements:
+    - owl:AnnotationProperty
+    description: The form of the term shown to readers, when it differs from the label.
+      Must differ from every alt label.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:prefLabel
+    range: string
+  alt_labels:
+    name: alt_labels
+    implements:
+    - owl:AnnotationProperty
+    description: Other names the term is known by (synonyms, abbreviations).
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:altLabel
+    range: string
+    multivalued: true
+  definition_source:
+    name: definition_source
+    description: The source the term's definition is drawn from.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dcterms:source
+    range: definition source
+    inlined: false
+  broader:
+    name: broader
+    description: A more general term. Not transitive; query ancestors with skos:broader+.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:broader
+    range: glossary term
+    multivalued: true
+    inlined: false
+  related:
+    name: related
+    description: A term associated with this one, not by hierarchy. Symmetric; query
+      in both directions with skos:related|^skos:related.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: skos:related
+    range: glossary term
+    multivalued: true
+    inlined: false
+  value_of:
+    name: value_of
+    description: The attribute term this term is a value of (e.g. "on hold" is a value
+      of "accrual status").
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dgo:DGO_00000032
+    range: glossary term
+    inlined: false
+  replaced_by:
+    name: replaced_by
+    description: The term that succeeds this one, once it is deprecated.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dcterms:isReplacedBy
+    range: glossary term
+    inlined: false
+  responsibilities:
+    name: responsibilities
+    description: The governance roles held with respect to this term (owner, steward,
+      custodian, subject matter expert), each naming who bears it.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dgo:DGO_00000033
+    range: governance role
+    multivalued: true
+    inlined_as_list: true
+  has_output:
+    name: has_output
+    description: The term this creation process produced.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: ro:0002234
+    range: glossary term
+    inlined: false
+  has_participant:
+    name: has_participant
+    description: Who took part in this process.
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: ro:0000057
+    multivalued: true
+    inlined: false
+    any_of:
+    - range: person
+    - range: organization
+    - range: data governance council
+classes:
+  entity:
+    name: entity
+    from_schema: https://w3id.org/dgo/core
+    class_uri: bfo:0000001
+  identifiable:
+    name: identifiable
+    from_schema: https://w3id.org/dgo/core
+    mixin: true
+    slots:
+    - id
+    - label
+  role:
+    name: role
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000023
+  object:
+    name: object
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000030
+  object aggregate:
+    name: object aggregate
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000027
+  process:
+    name: process
+    from_schema: https://w3id.org/dgo/management
+    class_uri: bfo:0000015
+  data governance:
+    name: data governance
+    description: A process of governing an organization's data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: process
+    mixins:
+    - identifiable
+    slots:
+    - part_of
+    slot_usage:
+      part_of:
+        name: part_of
+        range: data governance
+    class_uri: dgo:DGO_00000001
+  data governance council:
+    name: data governance council
+    description: A group whose collective role is to implement the data governance
+      process to which it is assigned.
+    from_schema: https://w3id.org/dgo/management
+    is_a: object aggregate
+    mixins:
+    - identifiable
+    slots:
+    - participates_in
+    - has_member
+    class_uri: dgo:DGO_00000002
+  person:
+    name: person
+    description: An individual human being.
+    from_schema: https://w3id.org/dgo/management
+    exact_mappings:
+    - http://purl.obolibrary.org/obo/NCBITaxon_9606
+    is_a: object
+    mixins:
+    - identifiable
+    slots:
+    - email
+    - title
+    class_uri: dgo:DGO_00000003
+  organization:
+    name: organization
+    description: A group of people organized for a specific purpose or set of purposes
+      within an organization.
+    from_schema: https://w3id.org/dgo/management
+    is_a: object aggregate
+    mixins:
+    - identifiable
+    slots:
+    - email
+    class_uri: dgo:DGO_00000004
+  council role:
+    name: council role
+    description: What facet of stewardship the holder is responsible for on a Governance
+      Council.
+    from_schema: https://w3id.org/dgo/management
+    is_a: role
+    slots:
+    - type
+    - role_of
+    - realized_in
+    class_uri: dgo:DGO_00000005
+  chair:
+    name: chair
+    description: Convenes the council and owns final sign-off on decisions.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000006
+  security steward:
+    name: security steward
+    description: Advises on access controls and safeguarding of the data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000007
+  ethics steward:
+    name: ethics steward
+    description: Advises on ethical use and transparency across the organization.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000008
+  documentation steward:
+    name: documentation steward
+    description: Keeps definitions, lineage, and decisions documented.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000009
+  compliance steward:
+    name: compliance steward
+    description: Advises on regulatory and policy conformance.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000010
+  governance role:
+    name: governance role
+    description: What an individual or entity is responsible for with respect to a
+      managed term.
+    from_schema: https://w3id.org/dgo/management
+    is_a: role
+    slots:
+    - type
+    - role_of
+    - realized_in
+    class_uri: dgo:DGO_00000011
+  owner:
+    name: owner
+    description: Accountable for approving data definition.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000012
+  steward:
+    name: steward
+    description: Responsible for quality of implementing data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000013
+  custodian:
+    name: custodian
+    description: Consulted on the collection, storage, and management of data.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000014
+  subject matter expert:
+    name: subject matter expert
+    description: Consulted on meaning and use of data in practice.
+    from_schema: https://w3id.org/dgo/management
+    is_a: governance role
+    class_uri: dgo:DGO_00000015
+  information content entity:
+    name: information content entity
+    from_schema: https://w3id.org/dgo/glossary
+    class_uri: iao:0000030
+  process boundary:
+    name: process boundary
+    from_schema: https://w3id.org/dgo/glossary
+    class_uri: bfo:0000035
+  domain:
+    name: domain
+    description: A group of glossary terms that relates to a particular section or
+      definable .
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    - part_of
+    slot_usage:
+      part_of:
+        name: part_of
+        range: business glossary
+    class_uri: dgo:DGO_00000016
+  subject area:
+    name: subject area
+    description: A governed grouping of terms which is more specific.
+    title: Subject Area
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    - part_of
+    slot_usage:
+      part_of:
+        name: part_of
+        range: domain
+        required: true
+    class_uri: dgo:DGO_00000017
+  business glossary:
+    name: business glossary
+    description: A glossary is a grouping of terms.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    class_uri: dgo:DGO_00000018
+  glossary term:
+    name: glossary term
+    description: A governed business term that relates, in whole or in part, to data
+      that exists within an organization's governance.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    - pref_label
+    - alt_labels
+    - definition
+    - definition_source
+    - part_of
+    - in_subject_area
+    - broader
+    - related
+    - value_of
+    - replaced_by
+    - responsibilities
+    slot_usage:
+      part_of:
+        name: part_of
+        range: business glossary
+        required: true
+      in_subject_area:
+        name: in_subject_area
+        required: true
+    class_uri: dgo:DGO_00000019
+  definition source:
+    name: definition source
+    description: A source that a term's definition is drawn from. Its id is the source's
+      IRI; its label describes the source. Many terms may cite one source.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    class_uri: dgo:DGO_00000030
+  term lifecycle process:
+    name: term lifecycle process
+    description: A governance process that brings a business term into, or changes
+      it within, the business glossary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: data governance
+    slots:
+    - has_output
+    - has_participant
+    slot_usage:
+      has_output:
+        name: has_output
+        required: true
+    class_uri: dgo:DGO_00000020
+  term creation:
+    name: term creation
+    description: The process by which a new governed business term is proposed, validated,
+      and approved for publishing in the  business glossary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: term lifecycle process
+    class_uri: dgo:DGO_00000021
+  term modification:
+    name: term modification
+    description: The process by which an extant governed business term is proposed
+      to be modified, validated, and approved for publishing in the business glossary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: term lifecycle process
+    class_uri: dgo:DGO_00000022
+  term deprecation:
+    name: term deprecation
+    description: The process by which an extant governed business term is proposed
+      to be retired from the business glossary. The term is deprecated once this process
+      reaches its approved boundary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: term lifecycle process
+    class_uri: dgo:DGO_00000031
+  status boundary:
+    name: status boundary
+    description: The moment a term's status changed during a lifecycle process.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: process boundary
+    slots:
+    - type
+    - part_of
+    - occurred_on
+    slot_usage:
+      part_of:
+        name: part_of
+        range: term lifecycle process
+        required: true
+      occurred_on:
+        name: occurred_on
+        required: true
+    class_uri: dgo:DGO_00000023
+  drafted:
+    name: drafted
+    description: The point where a term or modification has been first drafted.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: status boundary
+    class_uri: dgo:DGO_00000024
+  submitted for review:
+    name: submitted for review
+    description: The point where a term or modification has moved into being verified
+      by a data steward.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: status boundary
+    class_uri: dgo:DGO_00000025
+  approved:
+    name: approved
+    description: 'The point where a term or modification, resulting from a decision
+      of the responsible data governance council, has been made final. '
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: status boundary
+    class_uri: dgo:DGO_00000026
+  rejected:
+    name: rejected
+    description: 'The point where a term or modification, resulting from a decision
+      of the responsible data governance council, is no longer under consideration. '
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: status boundary
+    class_uri: dgo:DGO_00000027
+source_file: src/dgo.yaml
