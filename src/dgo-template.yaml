@@ -15,8 +15,8 @@ classes:
     tree_root: true
     description: One document holding a governance setup and its registries.
     slots: [processes, councils, people, organizations, council_roles, governance_roles,
-            business_glossaries, domains, subject_areas, glossary_terms, term_creations,
-            term_status_boundaries]
+            business_glossaries, domains, subject_areas, glossary_terms, definition_sources,
+            term_creations, term_modifications, term_deprecations, term_status_boundaries]
 
 slots:
   processes:
@@ -57,6 +57,18 @@ slots:
     inlined_as_list: true
   term_creations:
     range: term creation
+    multivalued: true
+    inlined_as_list: true
+  definition_sources:
+    range: definition source
+    multivalued: true
+    inlined_as_list: true
+  term_modifications:
+    range: term modification
+    multivalued: true
+    inlined_as_list: true
+  term_deprecations:
+    range: term deprecation
     multivalued: true
     inlined_as_list: true
   term_status_boundaries:

@@ -44,10 +44,31 @@ classes:
     is_a: information content entity
     description: >-
       A governed business term that relates, in whole or in part, to data that exists within an organization's governance.
-    slots: [id, label, definition, part_of, in_subject_area]
+    slots:
+      - id
+      - label
+      - pref_label
+      - alt_labels
+      - definition
+      - definition_source
+      - part_of
+      - in_subject_area
+      - broader
+      - related
+      - value_of
+      - replaced_by
+      - responsibilities
     slot_usage:
       part_of: { range: business glossary, required: true }
       in_subject_area: { required: true }
+
+  definition source:
+    class_uri: dgo:DGO_00000030
+    is_a: information content entity
+    description: >-
+      A source that a term's definition is drawn from. Its id is the source's
+      IRI; its label describes the source. Many terms may cite one source.
+    slots: [id, label]
 
   term lifecycle process:
     class_uri: dgo:DGO_00000020
@@ -70,8 +91,15 @@ classes:
     class_uri: dgo:DGO_00000022
     is_a: term lifecycle process
     description: >-
-      The process by which an extant governed business term is proposed to be modified, validated, and approved for publishing in the 
+      The process by which an extant governed business term is proposed to be modified, validated, and approved for publishing in the
       business glossary.
+
+  term deprecation:
+    class_uri: dgo:DGO_00000031
+    is_a: term lifecycle process
+    description: >-
+      The process by which an extant governed business term is proposed to be retired from
+      the business glossary. The term is deprecated once this process reaches its approved boundary.
 
   status boundary:
     class_uri: dgo:DGO_00000023
@@ -81,7 +109,7 @@ classes:
     slots: [type, part_of, occurred_on]
     slot_usage:
       part_of: { range: term lifecycle process, required: true }
-      date: { required: true }
+      occurred_on: { required: true }
 
   drafted:
     class_uri: dgo:DGO_00000024
@@ -133,6 +161,67 @@ slots:
     description: The meaning of the term.
     range: string
     required: true
+
+  pref_label:
+    description: >-
+      The form of the term shown to readers, when it differs from the label.
+      Must differ from every alt label.
+    slot_uri: skos:prefLabel
+    range: string
+    implements: [owl:AnnotationProperty]
+
+  alt_labels:
+    description: Other names the term is known by (synonyms, abbreviations).
+    slot_uri: skos:altLabel
+    range: string
+    multivalued: true
+    implements: [owl:AnnotationProperty]
+
+  definition_source:
+    description: The source the term's definition is drawn from.
+    slot_uri: dcterms:source
+    range: definition source
+    inlined: false
+
+  broader:
+    description: >-
+      A more general term. Not transitive; query ancestors with skos:broader+.
+    slot_uri: skos:broader
+    range: glossary term
+    multivalued: true
+    inlined: false
+
+  related:
+    description: >-
+      A term associated with this one, not by hierarchy. Symmetric; query
+      in both directions with skos:related|^skos:related.
+    slot_uri: skos:related
+    range: glossary term
+    multivalued: true
+    inlined: false
+
+  value_of:
+    description: >-
+      The attribute term this term is a value of (e.g. "on hold" is a value
+      of "accrual status").
+    slot_uri: dgo:DGO_00000032
+    range: glossary term
+    inlined: false
+
+  replaced_by:
+    description: The term that succeeds this one, once it is deprecated.
+    slot_uri: dcterms:isReplacedBy
+    range: glossary term
+    inlined: false
+
+  responsibilities:
+    description: >-
+      The governance roles held with respect to this term (owner, steward,
+      custodian, subject matter expert), each naming who bears it.
+    slot_uri: dgo:DGO_00000033
+    range: governance role
+    multivalued: true
+    inlined_as_list: true
 
   has_output:
     description: The term this creation process produced.

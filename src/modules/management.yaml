@@ -40,6 +40,7 @@ classes:
     class_uri: dgo:DGO_00000003
     is_a: object
     mixins: [identifiable]
+    slots: [email, title]
     # optional cross-walk without committing to the taxonomy:
     exact_mappings:
       - http://purl.obolibrary.org/obo/NCBITaxon_9606
@@ -50,6 +51,7 @@ classes:
     class_uri: dgo:DGO_00000004
     is_a: object aggregate
     mixins: [identifiable]
+    slots: [email]
     description: >-
       A group of people organized for a specific purpose or set of purposes within an organization.
 
@@ -128,14 +130,28 @@ slots:
       - range: organization
 
   role_of:
-    description: The council member (person or organization) that bears this role.
+    description: The person, organization, or council that bears this role.
     slot_uri: ro:0000081
     any_of:
       - range: person
       - range: organization
+      - range: data governance council
 
   realized_in:
     description: The governance process in which this role is realized.
     slot_uri: bfo:0000055
     range: data governance
+
+  email:
+    description: >-
+      A contact email address, as a plain string. (Not foaf:mbox, which expects
+      a mailto: IRI.)
+    slot_uri: schema:email
+    range: string
+
+  title:
+    description: >-
+      A person's job title. (Not foaf:title, which is an honorific such as Dr.)
+    slot_uri: schema:jobTitle
+    range: string
 

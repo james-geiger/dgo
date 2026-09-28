@@ -15,6 +15,7 @@ prefixes:
   org: http://www.w3.org/ns/org#
   prov: http://www.w3.org/ns/prov#
   foaf: http://xmlns.com/foaf/0.1/
+  schema: http://schema.org/
   vann: http://purl.org/vocab/vann/
   bibo: http://purl.org/ontology/bibo/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
