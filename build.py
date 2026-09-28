@@ -48,6 +48,19 @@ def drop(node):
 drop(ident)
 g.remove((None, None, ident))
 
+# owlgen declares every slot as an owl:ObjectProperty and adds restrictions for
+# it. That is invalid for slots mapped onto built-in vocabulary, so undo it:
+#   rdf:type   - reserved RDF vocabulary (the `type` slot only lets instance data
+#                name a subclass, via designates_type)
+#   rdfs:label - a built-in annotation property; restrictions on it can't be
+#                parsed, and the OWL API replaces each one with an "ErrorN" class
+# The properties keep their meaning; only the bogus declarations and
+# restrictions are removed. Labels on entities are untouched.
+for prop in (rdflib.RDF.type, rdflib.RDFS.label):
+    drop(prop)
+    for r in list(g.subjects(rdflib.OWL.onProperty, prop)):
+        g.remove((None, rdflib.RDFS.subClassOf, r))
+        drop(r)
 ttl = g.serialize(format="turtle")
 Path(OUT).write_text(ttl)
 print(f"✓ wrote {OUT} ({len(where)} ids checked)")
