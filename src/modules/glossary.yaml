@@ -56,6 +56,7 @@ classes:
       - broader
       - related
       - value_of
+      - semantic_type
       - replaced_by
       - responsibilities
     slot_usage:
@@ -207,6 +208,17 @@ slots:
     slot_uri: dgo:DGO_00000032
     range: glossary term
     inlined: false
+
+  semantic_type:
+    description: >-
+      The kind of thing the term denotes, given as the IRI of a class in an
+      external ontology (e.g. "clinical trial" denotes a BFO process). Types the
+      term's referent, not the term itself: the term stays an information
+      content entity.
+    slot_uri: dgo:DGO_00000034
+    range: uriorcurie
+    multivalued: false
+    implements: [owl:AnnotationProperty]
 
   replaced_by:
     description: The term that succeeds this one, once it is deprecated.

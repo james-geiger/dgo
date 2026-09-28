@@ -73,6 +73,7 @@ glossary_terms:
     in_subject_area: ex:clinical-research   # classification; its domain is one step further
     broader:
       - ex:clinical-study
+    semantic_type: bfo:0000015                 # what the term denotes, not what the term is
     responsibilities:                # current assignments, held with respect to this term
       - type: dgo:DGO_00000012       # owner
         role_of: ex:cto

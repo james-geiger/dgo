@@ -152,7 +152,7 @@ slots:
     inlined: false
   has_member:
     name: has_member
-    description: A person or organization that is a member of this council.
+    description: A person or organization that is a member of a council or other organization.
     from_schema: https://w3id.org/dgo/management
     slot_uri: ro:0002351
     multivalued: true
@@ -265,6 +265,18 @@ slots:
     slot_uri: dgo:DGO_00000032
     range: glossary term
     inlined: false
+  semantic_types:
+    name: semantic_types
+    implements:
+    - owl:AnnotationProperty
+    description: 'The kind of thing the term denotes, given as the IRI of a class
+      in an external ontology (e.g. "clinical trial" denotes a BFO process). Types
+      the term''s referent, not the term itself: the term stays an information content
+      entity.'
+    from_schema: https://w3id.org/dgo/glossary
+    slot_uri: dgo:DGO_00000034
+    range: uriorcurie
+    multivalued: true
   replaced_by:
     name: replaced_by
     description: The term that succeeds this one, once it is deprecated.
@@ -375,6 +387,7 @@ classes:
     mixins:
     - identifiable
     slots:
+    - has_member
     - email
     class_uri: dgo:DGO_00000004
   council role:
@@ -519,6 +532,7 @@ classes:
     - broader
     - related
     - value_of
+    - semantic_types
     - replaced_by
     - responsibilities
     slot_usage:

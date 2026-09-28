@@ -51,7 +51,7 @@ classes:
     class_uri: dgo:DGO_00000004
     is_a: object aggregate
     mixins: [identifiable]
-    slots: [email]
+    slots: [has_member, email]
     description: >-
       A group of people organized for a specific purpose or set of purposes within an organization.
 
@@ -121,7 +121,7 @@ slots:
     inlined: false
 
   has_member:
-    description: A person or organization that is a member of this council.
+    description: A person or organization that is a member of a council or other organization.
     slot_uri: ro:0002351
     multivalued: true
     inlined: false
