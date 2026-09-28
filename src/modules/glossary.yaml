@@ -244,6 +244,7 @@ slots:
   has_participant:
     description: Who took part in this process.
     slot_uri: ro:0000057
+    range: identifiable
     multivalued: true
     inlined: false
     any_of:

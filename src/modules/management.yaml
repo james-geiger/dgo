@@ -123,6 +123,7 @@ slots:
   has_member:
     description: A person or organization that is a member of a council or other organization.
     slot_uri: ro:0002351
+    range: identifiable
     multivalued: true
     inlined: false
     any_of:
@@ -132,6 +133,7 @@ slots:
   role_of:
     description: The person, organization, or council that bears this role.
     slot_uri: ro:0000081
+    range: identifiable
     any_of:
       - range: person
       - range: organization
