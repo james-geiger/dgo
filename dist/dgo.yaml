@@ -155,6 +155,7 @@ slots:
     description: A person or organization that is a member of a council or other organization.
     from_schema: https://w3id.org/dgo/management
     slot_uri: ro:0002351
+    range: identifiable
     multivalued: true
     inlined: false
     any_of:
@@ -165,6 +166,7 @@ slots:
     description: The person, organization, or council that bears this role.
     from_schema: https://w3id.org/dgo/management
     slot_uri: ro:0000081
+    range: identifiable
     any_of:
     - range: person
     - range: organization
@@ -305,6 +307,7 @@ slots:
     description: Who took part in this process.
     from_schema: https://w3id.org/dgo/glossary
     slot_uri: ro:0000057
+    range: identifiable
     multivalued: true
     inlined: false
     any_of:
@@ -401,6 +404,13 @@ classes:
     - role_of
     - realized_in
     class_uri: dgo:DGO_00000005
+  member:
+    name: member
+    description: An individual convened as part of a council to provide general advisement  and
+      without a specific leadership role, e.g. as an at-large participant.
+    from_schema: https://w3id.org/dgo/management
+    is_a: council role
+    class_uri: dgo:DGO_00000035
   chair:
     name: chair
     description: Convenes the council and owns final sign-off on decisions.

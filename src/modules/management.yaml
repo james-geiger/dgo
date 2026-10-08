@@ -61,6 +61,13 @@ classes:
     slots: [type, role_of, realized_in]
     description: What facet of stewardship the holder is responsible for on a Governance Council.
 
+  member:
+    is_a: council role
+    class_uri: dgo:DGO_00000035
+    description: >-
+      An individual convened as part of a council to provide general advisement
+      without a specific leadership role, e.g. as an at-large participant.
+
   chair:
     is_a: council role
     class_uri: dgo:DGO_00000006
