@@ -1,0 +1,68 @@
+# Lineage of each certified data set, from the set back to its sources of truth.
+#
+# One row per data set on the path (the certified set itself included), with
+# the governance and terminology it carries: its store, subject areas and their
+# domains, the glossary terms informed by its data elements, its
+# classifications, and who holds which role over it. A set derived from
+# nothing is a source of truth.
+#
+# Run over DGO instance data exported as RDF, e.g.
+#   linkml-convert -s src/dgo-template.yaml -C GovernanceRecord examples/unmc.yaml -o unmc.ttl
+# (the export holds no ontology axioms, so classes are matched by their own IRIs).
+
+PREFIX dgo:   <https://w3id.org/dgo/>
+PREFIX iao:   <http://purl.obolibrary.org/obo/IAO_>
+PREFIX bfo:   <http://purl.obolibrary.org/obo/BFO_>
+PREFIX ro:    <http://purl.obolibrary.org/obo/RO_>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?certified ?certifiedOn ?set ?setLabel ?sourceOfTruth
+       (GROUP_CONCAT(DISTINCT ?storeLabel; separator=", ")    AS ?stores)
+       (GROUP_CONCAT(DISTINCT ?areaLabel; separator=", ")     AS ?subjectAreas)
+       (GROUP_CONCAT(DISTINCT ?domainLabel; separator=", ")   AS ?domains)
+       (GROUP_CONCAT(DISTINCT ?termLabel; separator=", ")     AS ?terms)
+       (SAMPLE(?sensitivityLabel)                             AS ?sensitivity)
+       (SAMPLE(?securityLabel)                                AS ?security)
+       (GROUP_CONCAT(DISTINCT ?regLabel; separator=", ")      AS ?regulatory)
+       (GROUP_CONCAT(DISTINCT ?roleHolder; separator=", ")    AS ?roles)
+WHERE {
+  # a certified set: output of a certification that reached an approved boundary
+  ?cert a dgo:DGO_00000039 ;                      # data set certification
+        ro:0002234 ?certified .                   # has output
+  ?approved a dgo:DGO_00000026 ;                  # approved
+            bfo:0000050 ?cert ;
+            dcterms:date ?certifiedOn .
+
+  # the set itself and everything upstream of it
+  ?certified dgo:DGO_00000045* ?set .             # derived from, zero or more times
+  ?set rdfs:label ?setLabel .
+  BIND (NOT EXISTS { ?set dgo:DGO_00000045 ?upstream } AS ?sourceOfTruth)
+
+  OPTIONAL { ?set ro:0010001 ?store . ?store rdfs:label ?storeLabel }       # stored in
+  OPTIONAL {
+    ?set dgo:DGO_00000029 ?area . ?area rdfs:label ?areaLabel .            # in subject area
+    OPTIONAL { ?area bfo:0000050+ ?domain . ?domain a dgo:DGO_00000016 ;   # its domain
+                                             rdfs:label ?domainLabel }
+  }
+  OPTIONAL {                                       # terms informed by its elements
+    ?element bfo:0000050 ?set .
+    ?term dgo:DGO_00000044 ?element ;              # informed by
+          rdfs:label ?termLabel
+  }
+  OPTIONAL { ?set dgo:DGO_00000046 ?sens . ?sens rdfs:label ?sensitivityLabel }
+  OPTIONAL { ?set dgo:DGO_00000047 ?sec . ?sec rdfs:label ?securityLabel }
+  OPTIONAL { ?set dgo:DGO_00000048 ?reg . ?reg rdfs:label ?regLabel }
+  OPTIONAL {                                       # role type: bearer
+    ?set dgo:DGO_00000033 ?role .
+    ?role a ?roleType ; ro:0000081 ?bearer .
+    ?bearer rdfs:label ?bearerLabel .
+    VALUES (?roleType ?roleName) {                # the export carries no class labels
+      (dgo:DGO_00000012 "owner") (dgo:DGO_00000013 "steward")
+      (dgo:DGO_00000014 "custodian") (dgo:DGO_00000015 "subject matter expert")
+    }
+    BIND (CONCAT(?roleName, ": ", ?bearerLabel) AS ?roleHolder)
+  }
+}
+GROUP BY ?certified ?certifiedOn ?set ?setLabel ?sourceOfTruth
+ORDER BY ?certified ?sourceOfTruth

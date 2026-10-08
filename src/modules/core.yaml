@@ -52,6 +52,7 @@ slots:
       Words
     implements: [owl:AnnotationProperty]
     slot_uri: rdfs:label
+    range: string
     required: true
 
   type:
@@ -73,3 +74,16 @@ slots:
     range: entity
     transitive: true
     inlined: false
+
+  description:
+    description: A human-readable account of the thing, for readers.
+    slot_uri: dcterms:description
+    range: string
+    implements: [owl:AnnotationProperty]
+
+  definition:
+    slot_uri: dgo:DGO_00000028
+    close_mappings: [iao:0000115]   
+    description: The meaning of the term.
+    range: string
+    required: true

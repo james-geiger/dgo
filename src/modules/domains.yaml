@@ -1,0 +1,50 @@
+id: https://w3id.org/dgo/domains
+name: dgo_domains
+description: >-
+  The governed groupings that both glossary terms and data are classified
+  under: business glossaries, their domains, and the domains' subject areas.
+default_prefix: dgo
+imports:
+  - core
+  - management
+
+classes:
+
+  information content entity:
+    class_uri: iao:0000030
+
+  domain:
+    class_uri: dgo:DGO_00000016
+    is_a: information content entity
+    description: >-
+      A group of glossary terms that relates to a particular section or definable .
+    slots: [id, label, part_of]
+    slot_usage:
+      part_of: { range: business glossary }
+
+  subject area:
+    class_uri: dgo:DGO_00000017
+    is_a: information content entity
+    title: Subject Area
+    description: >-
+      A governed grouping of terms which is more specific.
+    slots: [id, label, part_of]
+    slot_usage:
+      part_of: { range: domain, required: true }
+
+  business glossary:
+    class_uri: dgo:DGO_00000018
+    is_a: information content entity
+    description: >-
+      A glossary is a grouping of terms.
+    slots: [id, label]
+
+slots:
+
+  in_subject_area:
+    description: >-
+      The subject area this term or data set is classified under, and through
+      it the domain.
+    slot_uri: dgo:DGO_00000029
+    range: subject area
+    inlined: false

@@ -28,6 +28,57 @@ classes:
     description: >-
       A process of governing an organization's data.
 
+  process boundary:
+    class_uri: bfo:0000035
+
+  lifecycle process:
+    class_uri: dgo:DGO_00000036
+    is_a: data governance
+    abstract: true
+    description: >-
+      A governance process that brings a governed artifact (a glossary term, a
+      data set) into, or changes its standing within, governance. Its progress
+      is marked by status boundaries.
+    slots: [has_output, has_participant]
+
+  status boundary:
+    class_uri: dgo:DGO_00000023
+    is_a: process boundary
+    description: >-
+      The moment a governed artifact's status changed during a lifecycle process.
+    slots: [type, part_of, occurred_on]
+    slot_usage:
+      part_of: { range: lifecycle process, required: true }
+      occurred_on: { required: true }
+
+  drafted:
+    class_uri: dgo:DGO_00000024
+    is_a: status boundary
+    description: >-
+      The point where a term, modification, or certification has been first drafted.
+
+  submitted for review:
+    class_uri: dgo:DGO_00000025
+    is_a: status boundary
+    description: >-
+      The point where a term, modification, or certification has moved into being
+      verified by a data steward.
+
+  approved:
+    class_uri: dgo:DGO_00000026
+    is_a: status boundary
+    description: >-
+      The point where a term, modification, or certification, resulting from a
+      decision of the responsible data governance council, has been made final.
+
+  rejected:
+    class_uri: dgo:DGO_00000027
+    is_a: status boundary
+    description: >-
+      The point where a term, modification, or certification, resulting from a
+      decision of the responsible data governance council, is no longer under
+      consideration.
+
   data governance council:
     class_uri: dgo:DGO_00000002
     is_a: object aggregate
@@ -160,7 +211,41 @@ slots:
 
   title:
     description: >-
-      A person's job title. (Not foaf:title, which is an honorific such as Dr.)
+      A person's job title.
     slot_uri: schema:jobTitle
     range: string
 
+  occurred_on:
+    description: >-
+      The date of an action.
+    slot_uri: dcterms:date
+    range: date
+    implements: [owl:AnnotationProperty]
+
+  has_output:
+    description: >-
+      What this lifecycle process produced or changed.
+    slot_uri: ro:0002234
+    range: identifiable
+    inlined: false
+
+  has_participant:
+    description: Who took part in this process.
+    slot_uri: ro:0000057
+    range: identifiable
+    multivalued: true
+    inlined: false
+    any_of:
+      - range: person
+      - range: organization
+      - range: data governance council
+
+  responsibilities:
+    description: >-
+      The governance roles held with respect to this term, data store, data set
+      or data element (owner, steward, custodian, subject matter expert), each
+      naming who bears it.
+    slot_uri: dgo:DGO_00000033
+    range: governance role
+    multivalued: true
+    inlined_as_list: true

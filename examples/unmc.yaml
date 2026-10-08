@@ -14,6 +14,13 @@
 #    steward. It narrows the broader term "clinical study", later gained a cited
 #    definition source through a modification, and replaces the deprecated
 #    term "clinical investigation".
+#
+# 3. The OnCore protocols data set, carried by the OnCore CTMS, is the source of
+#    truth for protocol status and open date. The Clinical Trials Enrollment data
+#    set in the enterprise data warehouse is derived from it, field by field.
+#    The term "active study" is informed by both fields, in both sets. Both
+#    sets are confidential, role-based, and PHI. Research IT is custodian of
+#    both stores. The RA committee certified the warehouse set on 2026-10-20.
 
 # --- governance ---------------------------------------------------------------
 
@@ -39,6 +46,8 @@ organizations:
   - id: ex:cto
     label: Clinical Trials Office
     email: cto@example.org
+  - id: ex:research-it
+    label: Research IT
 
 council_roles:
   - type: dgo:DGO_00000006           # chair
@@ -93,6 +102,19 @@ glossary_terms:
     in_subject_area: ex:clinical-research
     replaced_by: ex:clinical-trial   # its successor; deprecated by ex:clinical-investigation-deprecation
 
+  - id: ex:active-study
+    label: active study
+    definition: a clinical study that is open to accrual and has passed its open date
+    part_of: ex:unmc-glossary
+    in_subject_area: ex:clinical-research
+    broader:
+      - ex:clinical-study
+    informed_by:                     # the data that determines the term, in both sets
+      - ex:oncore-protocol-status
+      - ex:oncore-open-date
+      - ex:edw-protocol-status
+      - ex:edw-open-date
+
 definition_sources:              # id is the source's IRI; label describes it
   - id: https://grants.nih.gov/policy/clinical-trials/definition.htm
     label: NIH definition of a clinical trial
@@ -117,7 +139,7 @@ term_deprecations:
     has_output: ex:clinical-investigation
     part_of: ex:ra-dg                # deprecated once this process reaches its approved boundary
 
-term_status_boundaries:        # quote dates: LinkML validation rejects unquoted YAML dates
+status_boundaries:             # quote dates: LinkML validation rejects unquoted YAML dates
   - type: dgo:DGO_00000024           # drafted (proposed)
     part_of: ex:clinical-trial-creation
     occurred_on: "2026-09-25"
@@ -141,3 +163,107 @@ term_status_boundaries:        # quote dates: LinkML validation rejects unquoted
   - type: dgo:DGO_00000026           # deprecation approved: the term is now deprecated
     part_of: ex:clinical-investigation-deprecation
     occurred_on: "2026-10-12"
+
+  - type: dgo:DGO_00000024           # certification drafted
+    part_of: ex:ct-enrollment-certification
+    occurred_on: "2026-10-14"
+  - type: dgo:DGO_00000026           # certification approved: the data set is certified
+    part_of: ex:ct-enrollment-certification
+    occurred_on: "2026-10-20"
+
+# --- data ---------------------------------------------------------------------
+
+sensitivity_levels:              # org-defined; higher severity = more harm on disclosure
+  - id: ex:internal
+    label: Internal
+    definition: data whose disclosure outside the institution would cause limited harm
+    severity: 2
+  - id: ex:confidential
+    label: Confidential
+    definition: data whose disclosure would cause serious harm to people or the institution
+    severity: 3
+
+security_levels:
+  - id: ex:role-based
+    label: Role-based
+    definition: access is granted to roles approved by the data owner
+    severity: 2
+
+regulations:
+  - id: ex:phi
+    label: PHI (HIPAA)
+    definition: protected health information under the HIPAA Privacy Rule
+
+data_stores:
+  - id: ex:oncore
+    label: OnCore CTMS
+    responsibilities:
+      - type: dgo:DGO_00000014       # custodian
+        role_of: ex:research-it
+  - id: ex:edw
+    label: Enterprise Data Warehouse
+    responsibilities:
+      - type: dgo:DGO_00000014       # custodian
+        role_of: ex:research-it
+
+data_sets:
+  - id: ex:oncore-protocols         # derived from nothing: a source of truth
+    label: OnCore protocols
+    stored_in:
+      - ex:oncore
+    in_subject_area:                 # its domain (Research) follows from the subject area
+      - ex:clinical-research
+    sensitivity: ex:confidential
+    security_level: ex:role-based
+    regulatory_categories:
+      - ex:phi
+    responsibilities:
+      - type: dgo:DGO_00000012       # owner
+        role_of: ex:cto
+
+  - id: ex:ct-enrollment
+    label: Clinical Trials Enrollment
+    description: Certified, consumer-facing protocol and enrollment data.
+    stored_in:
+      - ex:edw
+    in_subject_area:
+      - ex:clinical-research
+    derived_from:
+      - ex:oncore-protocols
+    sensitivity: ex:confidential
+    security_level: ex:role-based
+    regulatory_categories:
+      - ex:phi
+    responsibilities:
+      - type: dgo:DGO_00000012       # owner
+        role_of: ex:cto
+      - type: dgo:DGO_00000013       # steward
+        role_of: ex:ra-committee
+
+data_elements:                   # each element is part of exactly one data set
+  - id: ex:oncore-protocol-status
+    label: protocol status
+    part_of: ex:oncore-protocols
+  - id: ex:oncore-open-date
+    label: open date
+    part_of: ex:oncore-protocols
+    sensitivity: ex:internal         # an element may carry its own, lower, level
+
+  - id: ex:edw-protocol-status
+    label: protocol status
+    part_of: ex:ct-enrollment
+    derived_from:
+      - ex:oncore-protocol-status
+  - id: ex:edw-open-date
+    label: open date
+    part_of: ex:ct-enrollment
+    derived_from:
+      - ex:oncore-open-date
+
+data_set_certifications:
+  - id: ex:ct-enrollment-certification
+    label: Certification of Clinical Trials Enrollment
+    has_output: ex:ct-enrollment
+    has_participant:
+      - ex:ra-committee
+    part_of: ex:ra-dg                # certified within RA data governance, so by its committee

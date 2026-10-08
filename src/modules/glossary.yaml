@@ -4,40 +4,10 @@ default_prefix: dgo
 imports:
   - core
   - management
+  - domains
+  - datasets
 
 classes:
-
-  information content entity:
-    class_uri: iao:0000030
-
-  process boundary:
-    class_uri: bfo:0000035
-
-  domain:
-    class_uri: dgo:DGO_00000016
-    is_a: information content entity
-    description: >-
-      A group of glossary terms that relates to a particular section or definable .
-    slots: [id, label, part_of]
-    slot_usage:
-      part_of: { range: business glossary }
-
-  subject area:
-    class_uri: dgo:DGO_00000017
-    is_a: information content entity
-    title: Subject Area
-    description: >-
-      A governed grouping of terms which is more specific.
-    slots: [id, label, part_of]
-    slot_usage:
-      part_of: { range: domain, required: true }
-
-  business glossary:
-    class_uri: dgo:DGO_00000018
-    is_a: information content entity
-    description: >-
-      A glossary is a grouping of terms.
-    slots: [id, label]
 
   glossary term:
     class_uri: dgo:DGO_00000019
@@ -59,6 +29,7 @@ classes:
       - semantic_type
       - replaced_by
       - responsibilities
+      - informed_by
     slot_usage:
       part_of: { range: business glossary, required: true }
       in_subject_area: { required: true }
@@ -73,13 +44,12 @@ classes:
 
   term lifecycle process:
     class_uri: dgo:DGO_00000020
-    is_a: data governance
+    is_a: lifecycle process
     description: >-
       A governance process that brings a business term into, or changes it within,
       the business glossary.
-    slots: [has_output, has_participant]
     slot_usage:
-      has_output: { required: true }
+      has_output: { range: glossary term, required: true }
   
   term creation:
     class_uri: dgo:DGO_00000021
@@ -102,66 +72,7 @@ classes:
       The process by which an extant governed business term is proposed to be retired from
       the business glossary. The term is deprecated once this process reaches its approved boundary.
 
-  status boundary:
-    class_uri: dgo:DGO_00000023
-    is_a: process boundary
-    description: >-
-      The moment a term's status changed during a lifecycle process.
-    slots: [type, part_of, occurred_on]
-    slot_usage:
-      part_of: { range: term lifecycle process, required: true }
-      occurred_on: { required: true }
-
-  drafted:
-    class_uri: dgo:DGO_00000024
-    is_a: status boundary
-    description: >-
-      The point where a term or modification has been first drafted.
-
-  submitted for review:
-    class_uri: dgo:DGO_00000025
-    is_a: status boundary
-    description: >-
-      The point where a term or modification has moved into being verified by a data steward.
-
-  approved:
-    class_uri: dgo:DGO_00000026
-    is_a: status boundary
-    description: >-
-      The point where a term or modification, resulting from a decision of the responsible data
-      governance council, has been made final. 
-    
-  rejected:
-    class_uri: dgo:DGO_00000027
-    is_a: status boundary
-    description: >-
-      The point where a term or modification, resulting from a decision of the responsible data
-      governance council, is no longer under consideration. 
-
 slots:
-
-  in_subject_area:
-    description: >-
-      The subject area this term is classified under. Classification, not
-      containment: a term is part of its glossary, never of a subject area.
-      (RO's "member of" is a sub-property of part of, so it isn't used here.)
-    slot_uri: dgo:DGO_00000029
-    range: subject area
-    inlined: false
-
-  occurred_on:
-    description: >-
-      The date of an action.
-    slot_uri: dcterms:date
-    range: date
-    implements: [owl:AnnotationProperty]
-
-  definition:
-    slot_uri: dgo:DGO_00000028
-    close_mappings: [iao:0000115]   
-    description: The meaning of the term.
-    range: string
-    required: true
 
   pref_label:
     description: >-
@@ -179,10 +90,14 @@ slots:
     implements: [owl:AnnotationProperty]
 
   definition_source:
-    description: The source the term's definition is drawn from.
-    slot_uri: dcterms:source
+    description: >-
+      The source the term's definition is drawn from.
+    slot_uri: dgo:DGO_00000050
+    exact_mappings: [iao:0000119]
+    close_mappings: [dcterms:source]
     range: definition source
     inlined: false
+    implements: [owl:AnnotationProperty]
 
   broader:
     description: >-
@@ -221,33 +136,21 @@ slots:
     implements: [owl:AnnotationProperty]
 
   replaced_by:
-    description: The term that succeeds this one, once it is deprecated.
-    slot_uri: dcterms:isReplacedBy
-    range: glossary term
-    inlined: false
-
-  responsibilities:
     description: >-
-      The governance roles held with respect to this term (owner, steward,
-      custodian, subject matter expert), each naming who bears it.
-    slot_uri: dgo:DGO_00000033
-    range: governance role
-    multivalued: true
-    inlined_as_list: true
-
-  has_output:
-    description: The term this creation process produced.
-    slot_uri: ro:0002234
+      The term that succeeds this one, once it is deprecated.
+    slot_uri: dgo:DGO_00000051
+    exact_mappings: [iao:0100001]
+    close_mappings: [dcterms:isReplacedBy]
     range: glossary term
     inlined: false
+    implements: [owl:AnnotationProperty]
 
-  has_participant:
-    description: Who took part in this process.
-    slot_uri: ro:0000057
-    range: identifiable
+  informed_by:
+    description: >-
+      The data elements whose values define or determine this term (e.g. a
+      protocol status and an open date together determine "active study").
+      Information flows up from the data into the term.
+    slot_uri: dgo:DGO_00000044
+    range: data element
     multivalued: true
     inlined: false
-    any_of:
-      - range: person
-      - range: organization
-      - range: data governance council

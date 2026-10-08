@@ -61,6 +61,19 @@ g.remove((None, None, ident))
 
 RDF, RDFS, OWL = rdflib.RDF, rdflib.RDFS, rdflib.OWL
 IAO_DEF_P = rdflib.URIRef("http://purl.obolibrary.org/obo/IAO_0000115")
+
+# owlgen writes a restriction from slot_usage on an inherited slot (has_output,
+# narrowed by each lifecycle process) against dgo:<slot name> instead of the
+# slot's slot_uri. Nothing declares that property, so the OWL API turns each
+# such restriction into an "ErrorN" class. Point them at the real property.
+schema_view = SchemaView(SCHEMA)
+for slot in schema_view.all_slots().values():
+    native = rdflib.URIRef("https://w3id.org/dgo/" + slot.name)
+    real = rdflib.URIRef(schema_view.get_uri(slot, expand=True))
+    if native != real:
+        for r in list(g.subjects(OWL.onProperty, native)):
+            g.remove((r, OWL.onProperty, native))
+            g.add((r, OWL.onProperty, real))
 def drop_restrictions(prop, keep=lambda r: False):
     for r in list(g.subjects(OWL.onProperty, prop)):
         if not keep(r):
@@ -105,6 +118,39 @@ for prop in annotation_props:
                 drop(o)
     g.remove((prop, OWL.inverseOf, None))
     g.add((prop, RDF.type, OWL.AnnotationProperty))
+
+# Imported terms (BFO, IAO, RO, SKOS, ...) are reused, never redefined. owlgen
+# writes a reused class's slots as restrictions on it (data set is IAO_0001000
+# itself), and a slot's range as a global rdfs:range on a reused property (the
+# range of stored_in would make every carrier of RO "generically depends on" a
+# data store). Drop both: the meaning stays in the restrictions on DGO classes,
+# and LinkML still checks the slots on YAML.
+def external(term):
+    return isinstance(term, rdflib.URIRef) and not str(term).startswith("https://w3id.org/dgo/")
+for cls in set(g.subjects(RDF.type, OWL.Class)):
+    if external(cls):
+        # its definition, label, scheme and place in the hierarchy are its own
+        # ontology's (restating a LinkML is_a would give it a second parent
+        # once that ontology moves it: IAO now puts data set under data
+        # collection); and owlgen's exactMatch to the LinkML-native URI
+        # (dgo:DataSet) names no real term
+        g.remove((cls, IAO_DEF_P, None))
+        g.remove((cls, RDFS.label, None))
+        g.remove((cls, rdflib.SKOS.inScheme, None))
+        g.remove((cls, rdflib.SKOS.exactMatch, None))
+        for parent in [o for o in g.objects(cls, RDFS.subClassOf) if not isinstance(o, rdflib.BNode)]:
+            g.remove((cls, RDFS.subClassOf, parent))
+        for r in [o for o in g.objects(cls, RDFS.subClassOf) if isinstance(o, rdflib.BNode)]:
+            g.remove((cls, RDFS.subClassOf, r))
+            if not any(g.triples((None, None, r))):
+                drop(r)
+for prop in set(g.subjects(RDF.type, OWL.ObjectProperty)) | set(g.subjects(RDF.type, OWL.DatatypeProperty)):
+    if external(prop):
+        for axis in (RDFS.range, RDFS.domain):
+            for o in list(g.objects(prop, axis)):
+                g.remove((prop, axis, o))
+                if isinstance(o, rdflib.BNode) and not any(g.triples((None, None, o))):
+                    drop(o)
 
 # Transitive properties (part_of) need their restrictions rewritten:
 #  - owlgen writes a slot's range as allValuesFrom ("everything this term is part
@@ -158,6 +204,47 @@ for prop in set(g.subjects(rdflib.RDF.type, OWL.TransitiveProperty)):
             g.add((r, OWL.allValuesFrom, top))
     drop_restrictions(prop, keep=lambda r: not any((r, c, None) in g for c in CARD)
                       and ((r, OWL.someValuesFrom, None) in g or (r, OWL.allValuesFrom, None) in g))
+
+# Imported object properties (RO, BFO) get no cardinality restrictions either.
+# OWL 2 DL forbids them on non-simple properties, and RO makes many of its
+# properties non-simple through property chains (participates in, has
+# participant, has output): with RO loaded, a reasoner refuses the ontology.
+# Which ones are non-simple is RO's to decide and can change between releases,
+# so none are restricted. A required slot keeps someValuesFrom with its range
+# (or owl:Thing); LinkML still checks required and single-valued on YAML.
+for prop in set(g.subjects(RDF.type, OWL.ObjectProperty)):
+    if not external(prop) or (prop, RDF.type, OWL.TransitiveProperty) in g:
+        continue
+    for cls, r in [(c, r) for r in list(g.subjects(OWL.onProperty, prop))
+                   for c in g.subjects(RDFS.subClassOf, r)]:
+        if min_cardinality(r) > 0:
+            filler = next((g.value(o, OWL.allValuesFrom)
+                           for o in g.objects(cls, RDFS.subClassOf)
+                           if (o, OWL.onProperty, prop) in g and (o, OWL.allValuesFrom, None) in g),
+                          OWL.Thing)
+            some = rdflib.BNode()
+            g.add((some, RDF.type, OWL.Restriction))
+            g.add((some, OWL.onProperty, prop))
+            g.add((some, OWL.someValuesFrom, filler))
+            g.add((cls, RDFS.subClassOf, some))
+    drop_restrictions(prop, keep=lambda r: not any((r, c, None) in g for c in CARD))
+
+# A restriction whose filler was the dropped `identifiable` mixin (e.g. the
+# range of has_output) is left with no filler at all: not valid OWL. Drop it.
+FILLERS = CARD | {OWL.allValuesFrom, OWL.someValuesFrom, OWL.hasValue}
+for r in list(g.subjects(RDF.type, OWL.Restriction)):
+    if not any((r, f, None) in g for f in FILLERS):
+        g.remove((None, None, r))
+        drop(r)
+
+# gate: every restriction is on a declared property (an undeclared one becomes
+# an "ErrorN" class in Protégé)
+declared = {p for kind in (OWL.ObjectProperty, OWL.DatatypeProperty, OWL.AnnotationProperty)
+            for p in g.subjects(RDF.type, kind)}
+undeclared = {str(p) for p in g.objects(None, OWL.onProperty) if p not in declared}
+if undeclared:
+    print(f"✗ restrictions on undeclared properties: {', '.join(sorted(undeclared))}", file=sys.stderr)
+    sys.exit(1)
 ttl = g.serialize(format="turtle")
 Path(OUT).parent.mkdir(exist_ok=True)
 Path(OUT).write_text(ttl)

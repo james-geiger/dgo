@@ -2,9 +2,11 @@ id: https://w3id.org/dgo/
 name: data_governance_ontology
 title: Data Governance Ontology
 description: >-
-  An ontology for data governance: business terms, subject areas, 
+  An ontology for data governance: business terms, subject areas,
   stewardship roles and responsibilities, term-lifecycle status,
-  data classification, and semantic typing.
+  semantic typing, and the governed data itself: data stores, data sets,
+  data elements, their sensitivity, security and regulatory classification,
+  certification, and lineage from source of truth to certified data set.
 version: 0.1.0
 license: https://w3id.org/dgo/LICENSE
 
@@ -17,6 +19,8 @@ default_range: string
 imports:
   - modules/core
   - modules/management
+  - modules/domains
+  - modules/datasets
   - modules/glossary
 
 annotations:
@@ -25,9 +29,11 @@ annotations:
   owl:versionInfo: "0.1.0"
   owl:imports: "http://purl.obolibrary.org/obo/bfo.owl http://purl.obolibrary.org/obo/iao.owl"
   dcterms:description: >-
-    An ontology for data governance: business terms, subject areas, 
+    An ontology for data governance: business terms, subject areas,
     stewardship roles and responsibilities, term-lifecycle status,
-    data classification, and semantic typing.
+    semantic typing, and the governed data itself: data stores, data sets,
+    data elements, their sensitivity, security and regulatory classification,
+    certification, and lineage from source of truth to certified data set.
   dcterms:created: "2026-09-24"
   dcterms:creator: James Geiger
   dcterms:publisher: James Geiger

@@ -1,0 +1,179 @@
+id: https://w3id.org/dgo/datasets
+name: dgo_datasets
+default_prefix: dgo
+imports:
+  - core
+  - management
+  - domains
+
+classes:
+
+  material entity:
+    class_uri: bfo:0000040
+
+  material information bearer:
+    class_uri: iao:0000178
+    is_a: material entity
+
+  data entity:
+    class_uri: iao:0000027
+
+  directive information entity:
+    class_uri: iao:0000033
+
+  data store:
+    class_uri: dgo:DGO_00000037
+    is_a: material information bearer
+    description: >-
+      A system kept and governed for storing data (a data warehouse, a clinical
+      system's reporting database, a file share): the material information
+      bearer, often an aggregate of disks and servers, in which the data sets
+      it carries are concretized. The data sets generically depend on it. The
+      operational system, not its logical design: a database schema is an
+      information content entity, not a data store. It carries no domain of
+      its own: the data sets and data elements it holds are what carry domains.
+    slots: [id, label, description, responsibilities]
+
+  data set:
+    class_uri: iao:0001000
+    is_a: data entity
+    close_mappings: [dcat:Dataset]
+    description: >-
+      A governed collection of data elements (IAO data collection: a data
+      entity that consists of multiple data entities). Its domains follow
+      from its subject areas; its terms are those informed by its data
+      elements. A data set is certified when a data set certification that
+      has it as output reaches an approved boundary. A data set that is
+      derived from no other is a source of truth.
+    slots:
+      - id
+      - label
+      - description
+      - stored_in
+      - in_subject_area
+      - derived_from
+      - sensitivity
+      - security_level
+      - regulatory_categories
+      - responsibilities
+    slot_usage:
+      in_subject_area: { multivalued: true, required: false }
+      derived_from: { range: data set }
+
+  data element:
+    class_uri: dgo:DGO_00000038
+    is_a: data entity
+    description: >-
+      A field or column within one data set: all of that set's values for one
+      attribute. The same attribute held in another set is another data
+      element, linked to this one by derived from. Its subject areas, and so
+      its domains, are those of its data set.
+    slots:
+      - id
+      - label
+      - description
+      - part_of
+      - derived_from
+      - sensitivity
+      - security_level
+      - regulatory_categories
+      - responsibilities
+    slot_usage:
+      part_of: { range: data set, required: true }
+      derived_from: { range: data element }
+
+  data set certification:
+    class_uri: dgo:DGO_00000039
+    is_a: lifecycle process
+    description: >-
+      The process by which a data set is reviewed and approved as fit for
+      consumers by the responsible data governance council. The data set is
+      certified once this process reaches its approved boundary, whose date is
+      the certification date.
+    slot_usage:
+      has_output: { range: data set, required: true }
+
+  data classification:
+    class_uri: dgo:DGO_00000040
+    is_a: directive information entity
+    abstract: true
+    description: >-
+      A level in an organization's scheme for classifying data, which
+      prescribes how data so classified must be handled. Organizations define
+      their own levels as instances of its subclasses.
+    slots: [id, label, definition]
+
+  sensitivity level:
+    class_uri: dgo:DGO_00000041
+    is_a: data classification
+    description: >-
+      A level of harm that disclosure of the data would cause (e.g. public,
+      internal, confidential, restricted).
+    slots: [severity]
+
+  security level:
+    class_uri: dgo:DGO_00000042
+    is_a: data classification
+    description: >-
+      A level of access control the data requires (e.g. open, role-based,
+      need-to-know).
+    slots: [severity]
+
+  regulatory category:
+    class_uri: dgo:DGO_00000043
+    is_a: data classification
+    description: >-
+      A regulatory regime the data falls under (e.g. PHI under HIPAA, FERPA
+      education records, 42 CFR Part 2). Unordered: data may fall under several.
+
+slots:
+
+  stored_in:
+    description: >-
+      The data store that carries this data set (RO generically depends on).
+    slot_uri: ro:0010001
+    range: data store
+    multivalued: true
+    inlined: false
+
+  derived_from:
+    description: >-
+      The data set or data element this one was produced from. Not
+      transitive; follow a lineage back to its source of truth with a
+      property path (derived from, one or more times).
+    slot_uri: dgo:DGO_00000045
+    close_mappings: [prov:wasDerivedFrom]
+    range: identifiable
+    multivalued: true
+    inlined: false
+    any_of:
+      - range: data set
+      - range: data element
+
+  sensitivity:
+    description: The sensitivity level of this data.
+    slot_uri: dgo:DGO_00000046
+    range: sensitivity level
+    inlined: false
+
+  security_level:
+    description: The security level this data requires.
+    slot_uri: dgo:DGO_00000047
+    range: security level
+    inlined: false
+
+  regulatory_categories:
+    description: The regulatory regimes this data falls under.
+    slot_uri: dgo:DGO_00000048
+    range: regulatory category
+    multivalued: true
+    inlined: false
+
+  severity:
+    description: >-
+      The level's position within its organization's scheme: higher means more
+      harm on disclosure (sensitivity) or stricter controls (security). Lets
+      lineage checks find the most severe level along a path.
+    slot_uri: dgo:DGO_00000049
+    range: integer
+    implements: [owl:AnnotationProperty]

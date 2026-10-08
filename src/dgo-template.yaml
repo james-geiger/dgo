@@ -6,6 +6,17 @@ description: >-
   LinkML instance data. Never run gen-owl on this file.
 prefixes:
   ex: https://w3id.org/dgo/data/
+  # The RDF dumper expands CURIEs with the root schema's prefixes only, so the
+  # ones DGO's slots and classes use are repeated here.
+  dgo: https://w3id.org/dgo/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+  schema: http://schema.org/
+  bfo: http://purl.obolibrary.org/obo/BFO_
+  iao: http://purl.obolibrary.org/obo/IAO_
+  ro: http://purl.obolibrary.org/obo/RO_
 default_prefix: dgo
 imports:
   - dgo
@@ -16,7 +27,10 @@ classes:
     description: One document holding a governance setup and its registries.
     slots: [processes, councils, people, organizations, council_roles, governance_roles,
             business_glossaries, domains, subject_areas, glossary_terms, definition_sources,
-            term_creations, term_modifications, term_deprecations, term_status_boundaries]
+            term_creations, term_modifications, term_deprecations, status_boundaries,
+            term_status_boundaries, data_stores, data_sets, data_elements,
+            data_set_certifications, sensitivity_levels, security_levels,
+            regulations]
 
 slots:
   processes:
@@ -71,11 +85,45 @@ slots:
     range: term deprecation
     multivalued: true
     inlined_as_list: true
+  status_boundaries:
+    description: Status boundaries of any lifecycle process (terms and certifications).
+    range: status boundary
+    multivalued: true
+    inlined_as_list: true
   term_status_boundaries:
+    deprecated: Use status_boundaries, which also holds data set certification boundaries.
     range: status boundary
     multivalued: true
     inlined_as_list: true
   business_glossaries:
     range: business glossary
+    multivalued: true
+    inlined_as_list: true
+  data_stores:
+    range: data store
+    multivalued: true
+    inlined_as_list: true
+  data_sets:
+    range: data set
+    multivalued: true
+    inlined_as_list: true
+  data_elements:
+    range: data element
+    multivalued: true
+    inlined_as_list: true
+  data_set_certifications:
+    range: data set certification
+    multivalued: true
+    inlined_as_list: true
+  sensitivity_levels:
+    range: sensitivity level
+    multivalued: true
+    inlined_as_list: true
+  security_levels:
+    range: security level
+    multivalued: true
+    inlined_as_list: true
+  regulations:
+    range: regulatory category
     multivalued: true
     inlined_as_list: true
