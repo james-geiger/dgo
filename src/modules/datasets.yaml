@@ -5,6 +5,7 @@ imports:
   - core
   - management
   - domains
+  - glossary
 
 classes:
 
@@ -41,8 +42,8 @@ classes:
     description: >-
       A governed collection of data elements (IAO data collection: a data
       entity that consists of multiple data entities). Its domains follow
-      from its subject areas; its terms are those informed by its data
-      elements. A data set is certified when a data set certification that
+      from its subject areas; its terms are those its data elements
+      represent. A data set is certified when a data set certification that
       has it as output reaches an approved boundary. A data set that is
       derived from no other is a source of truth.
     slots:
@@ -66,13 +67,15 @@ classes:
     description: >-
       A field or column within one data set: all of that set's values for one
       attribute. The same attribute held in another set is another data
-      element, linked to this one by derived from. Its subject areas, and so
-      its domains, are those of its data set.
+      element, linked to this one by derived from. It represents the glossary
+      term that gives its values their meaning. Its subject areas, and so its
+      domains, are those of its data set.
     slots:
       - id
       - label
       - description
       - part_of
+      - represents
       - derived_from
       - sensitivity
       - security_level
@@ -134,6 +137,17 @@ slots:
     slot_uri: ro:0010001
     range: data store
     multivalued: true
+    inlined: false
+
+  represents:
+    description: >-
+      The glossary term whose definition gives this data element's values
+      their meaning (e.g. the column tot_dir_cost represents the term "direct
+      cost"). The values are instances of what the term defines; the element
+      is not about the term. Following derived from, it shows which terms a
+      lineage shares and where the meaning changes.
+    slot_uri: dgo:DGO_00000044
+    range: glossary term
     inlined: false
 
   derived_from:

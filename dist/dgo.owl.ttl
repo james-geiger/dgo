@@ -47,7 +47,7 @@ skos:prefLabel a owl:AnnotationProperty ;
 dgo: a owl:Ontology ;
     rdfs:label "data_governance_ontology" ;
     IAO:0000115 "An ontology for data governance: business terms, subject areas, stewardship roles and responsibilities, term-lifecycle status, semantic typing, and the governed data itself: data stores, data sets, data elements, their sensitivity, security and regulatory classification, certification, and lineage from source of truth to certified data set." ;
-    dcterms:bibliographicCitation "Geiger, J.M. (2026). An ontology for data governance. Data Governance ontology, v0.1.0. https://w3id.org/dgo/" ;
+    dcterms:bibliographicCitation "Geiger, J.M. (2026). An ontology for data governance. Data Governance ontology, v0.2.0. https://w3id.org/dgo/" ;
     dcterms:created "2026-09-24" ;
     dcterms:creator "James Geiger" ;
     dcterms:description "An ontology for data governance: business terms, subject areas, stewardship roles and responsibilities, term-lifecycle status, semantic typing, and the governed data itself: data stores, data sets, data elements, their sensitivity, security and regulatory classification, certification, and lineage from source of truth to certified data set." ;
@@ -56,12 +56,12 @@ dgo: a owl:Ontology ;
     dcterms:publisher "James Geiger" ;
     dcterms:title "Data Governance Ontology" ;
     ns1:status "specification draft" ;
-    pav:version "0.1.0" ;
+    pav:version "0.2.0" ;
     vann:preferredNamespacePrefix "dgo" ;
     vann:preferredNamespaceUri "https://w3id.org/dgo/" ;
     owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
         <http://purl.obolibrary.org/obo/iao.owl> ;
-    owl:versionInfo "0.1.0" .
+    owl:versionInfo "0.2.0" .
 
 dgo:DGO_00000006 a owl:Class ;
     rdfs:label "chair" ;
@@ -195,9 +195,6 @@ dgo:DGO_00000037 a owl:Class ;
             owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000011 ;
-            owl:onProperty dgo:DGO_00000033 ],
-        [ a owl:Restriction ;
             owl:minCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
@@ -205,6 +202,9 @@ dgo:DGO_00000037 a owl:Class ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000033 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000011 ;
             owl:onProperty dgo:DGO_00000033 ],
         IAO:0000178 ;
     skos:exactMatch dgo:DataStore ;
@@ -268,17 +268,17 @@ dgo:DGO_00000016 a owl:Class ;
     rdfs:label "domain" ;
     IAO:0000115 "A group of glossary terms that relates to a particular section or definable ." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom IAO:0000030 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
-        [ a owl:Restriction ;
             owl:minCardinality 1 ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
-            owl:allValuesFrom xsd:anyURI ;
-            owl:onProperty dgo:id ],
+            owl:allValuesFrom IAO:0000030 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
         IAO:0000030 ;
     skos:exactMatch dgo:Domain ;
     skos:inScheme dgo:domains .
@@ -287,13 +287,13 @@ dgo:DGO_00000018 a owl:Class ;
     rdfs:label "business glossary" ;
     IAO:0000115 "A glossary is a grouping of terms." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
+            owl:minCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
-            owl:minCardinality 1 ;
+            owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         IAO:0000030 ;
     skos:exactMatch dgo:BusinessGlossary ;
@@ -303,13 +303,13 @@ dgo:DGO_00000030 a owl:Class ;
     rdfs:label "definition source" ;
     IAO:0000115 "A source that a term's definition is drawn from. Its id is the source's IRI; its label describes the source. Many terms may cite one source." ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:minCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         IAO:0000030 ;
     skos:exactMatch dgo:DefinitionSource ;
@@ -355,26 +355,20 @@ dgo:DGO_00000017 a owl:Class ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
             owl:someValuesFrom dgo:DGO_00000016 ],
         [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
             owl:minCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:allValuesFrom IAO:0000030 ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty dgo:id ],
         IAO:0000030 ;
     skos:exactMatch dgo:SubjectArea ;
     skos:inScheme dgo:domains .
-
-dgo:DGO_00000044 a owl:ObjectProperty ;
-    rdfs:label "informed_by" ;
-    IAO:0000115 "The data elements whose values define or determine this term (e.g. a protocol status and an open date together determine \"active study\"). Information flows up from the data into the term." ;
-    rdfs:range dgo:DGO_00000038 ;
-    skos:inScheme dgo:glossary .
 
 dgo:DGO_00000045 a owl:ObjectProperty ;
     rdfs:label "derived_from" ;
@@ -435,28 +429,95 @@ dgo:DGO_00000036 a owl:Class ;
     skos:exactMatch dgo:LifecycleProcess ;
     skos:inScheme dgo:management .
 
+dgo:DGO_00000038 a owl:Class ;
+    rdfs:label "data element" ;
+    IAO:0000115 "A field or column within one data set: all of that set's values for one attribute. The same attribute held in another set is another data element, linked to this one by derived from. It represents the glossary term that gives its values their meaning. Its subject areas, and so its domains, are those of its data set." ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
+            owl:someValuesFrom IAO:0001000 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ owl:intersectionOf ( [ owl:unionOf ( IAO:0001000 dgo:DGO_00000038 ) ] dgo:DGO_00000038 ) ] ;
+            owl:onProperty dgo:DGO_00000045 ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:DGO_00000046 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000041 ;
+            owl:onProperty dgo:DGO_00000046 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000044 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000011 ;
+            owl:onProperty dgo:DGO_00000033 ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:DGO_00000044 ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:DGO_00000047 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000048 ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000046 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000045 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000033 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000042 ;
+            owl:onProperty dgo:DGO_00000047 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom IAO:0001000 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000047 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000019 ;
+            owl:onProperty dgo:DGO_00000044 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000043 ;
+            owl:onProperty dgo:DGO_00000048 ],
+        IAO:0000027 ;
+    skos:exactMatch dgo:DataElement ;
+    skos:inScheme dgo:datasets .
+
 dgo:DGO_00000040 a owl:Class ;
     rdfs:label "data classification" ;
     IAO:0000115 "A level in an organization's scheme for classifying data, which prescribes how data so classified must be handled. Organizations define their own levels as instances of its subclasses." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty dgo:DGO_00000028 ],
-        [ owl:unionOf ( dgo:DGO_00000043 dgo:DGO_00000042 dgo:DGO_00000041 ) ],
-        [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty dgo:DGO_00000028 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty dgo:DGO_00000028 ],
+        [ owl:unionOf ( dgo:DGO_00000043 dgo:DGO_00000042 dgo:DGO_00000041 ) ],
         [ a owl:Restriction ;
             owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:minCardinality 1 ;
-            owl:onProperty dgo:id ],
+            owl:onProperty dgo:DGO_00000028 ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
-            owl:allValuesFrom xsd:string ;
-            owl:onProperty dgo:DGO_00000028 ],
+            owl:minCardinality 1 ;
+            owl:onProperty dgo:id ],
         IAO:0000033 ;
     skos:exactMatch dgo:DataClassification ;
     skos:inScheme dgo:datasets .
@@ -480,6 +541,12 @@ dgo:DGO_00000043 a owl:Class ;
     IAO:0000115 "A regulatory regime the data falls under (e.g. PHI under HIPAA, FERPA education records, 42 CFR Part 2). Unordered: data may fall under several." ;
     rdfs:subClassOf dgo:DGO_00000040 ;
     skos:exactMatch dgo:RegulatoryCategory ;
+    skos:inScheme dgo:datasets .
+
+dgo:DGO_00000044 a owl:ObjectProperty ;
+    rdfs:label "represents" ;
+    IAO:0000115 "The glossary term whose definition gives this data element's values their meaning (e.g. the column tot_dir_cost represents the term \"direct cost\"). The values are instances of what the term defines; the element is not about the term. Following derived from, it shows which terms a lineage shares and where the meaning changes." ;
+    rdfs:range dgo:DGO_00000019 ;
     skos:inScheme dgo:datasets .
 
 dgo:DGO_00000046 a owl:ObjectProperty ;
@@ -543,19 +610,19 @@ dgo:DGO_00000003 a owl:Class ;
             owl:onProperty <http://schema.org/jobTitle> ],
         [ a owl:Restriction ;
             owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://schema.org/jobTitle> ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
             owl:onProperty <http://schema.org/email> ],
         [ a owl:Restriction ;
             owl:minCardinality 0 ;
             owl:onProperty <http://schema.org/jobTitle> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://schema.org/email> ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty <http://schema.org/email> ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty <http://schema.org/email> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:string ;
-            owl:onProperty <http://schema.org/jobTitle> ],
         <http://purl.obolibrary.org/obo/BFO_0000030> ;
     skos:exactMatch <http://purl.obolibrary.org/obo/NCBITaxon_9606>,
         dgo:Person ;
@@ -565,79 +632,21 @@ dgo:DGO_00000004 a owl:Class ;
     rdfs:label "organization" ;
     IAO:0000115 "A group of people organized for a specific purpose or set of purposes within an organization." ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:minCardinality 0 ;
+            owl:allValuesFrom xsd:string ;
             owl:onProperty <http://schema.org/email> ],
         [ a owl:Restriction ;
-            owl:allValuesFrom xsd:string ;
+            owl:maxCardinality 1 ;
+            owl:onProperty <http://schema.org/email> ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
             owl:onProperty <http://schema.org/email> ],
         [ a owl:Restriction ;
             owl:allValuesFrom [ owl:intersectionOf [ rdf:first [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 ) ] ;
                             rdf:rest [ rdf:rest () ] ] ] ;
             owl:onProperty <http://purl.obolibrary.org/obo/RO_0002351> ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty <http://schema.org/email> ],
         <http://purl.obolibrary.org/obo/BFO_0000027> ;
     skos:exactMatch dgo:Organization ;
     skos:inScheme dgo:management .
-
-dgo:DGO_00000038 a owl:Class ;
-    rdfs:label "data element" ;
-    IAO:0000115 "A field or column within one data set: all of that set's values for one attribute. The same attribute held in another set is another data element, linked to this one by derived from. Its subject areas, and so its domains, are those of its data set." ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
-            owl:someValuesFrom IAO:0001000 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom [ owl:intersectionOf ( [ owl:unionOf ( IAO:0001000 dgo:DGO_00000038 ) ] dgo:DGO_00000038 ) ] ;
-            owl:onProperty dgo:DGO_00000045 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000042 ;
-            owl:onProperty dgo:DGO_00000047 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000047 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000011 ;
-            owl:onProperty dgo:DGO_00000033 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom IAO:0001000 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000041 ;
-            owl:onProperty dgo:DGO_00000046 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000033 ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:DGO_00000047 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000046 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:DGO_00000046 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000043 ;
-            owl:onProperty dgo:DGO_00000048 ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000045 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:anyURI ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000048 ],
-        IAO:0000027 ;
-    skos:exactMatch dgo:DataElement ;
-    skos:inScheme dgo:datasets .
 
 IAO:0001000 a owl:Class ;
     skos:closeMatch <dcat:Dataset> .
@@ -674,6 +683,22 @@ dgo:DGO_00000033 a owl:ObjectProperty ;
     rdfs:range dgo:DGO_00000011 ;
     skos:inScheme dgo:management .
 
+IAO:0000030 a owl:Class .
+
+dgo:DGO_00000011 a owl:Class ;
+    rdfs:label "governance role" ;
+    IAO:0000115 "What an individual or entity is responsible for with respect to a managed term." ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ owl:intersectionOf [ rdf:first [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 dgo:DGO_00000002 ) ] ;
+                            rdf:rest [ rdf:rest () ] ] ] ;
+            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000001 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
+        <http://purl.obolibrary.org/obo/BFO_0000023> ;
+    skos:exactMatch dgo:GovernanceRole ;
+    skos:inScheme dgo:management .
+
 dgo:DGO_00000019 a owl:Class ;
     rdfs:label "glossary term" ;
     IAO:0000115 "A governed business term that relates, in whole or in part, to data that exists within an organization's governance." ;
@@ -681,81 +706,59 @@ dgo:DGO_00000019 a owl:Class ;
             owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ;
             owl:someValuesFrom dgo:DGO_00000018 ],
         [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000019 ;
-            owl:onProperty skos:related ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000044 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000019 ;
-            owl:onProperty dgo:DGO_00000032 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty dgo:DGO_00000029 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000038 ;
-            owl:onProperty dgo:DGO_00000044 ],
-        [ a owl:Restriction ;
             owl:minCardinality 1 ;
             owl:onProperty dgo:DGO_00000028 ],
         [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty dgo:id ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom xsd:string ;
+            owl:maxCardinality 1 ;
             owl:onProperty dgo:DGO_00000028 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom IAO:0000030 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000017 ;
-            owl:onProperty dgo:DGO_00000029 ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000032 ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000019 ;
-            owl:onProperty skos:broader ],
-        [ a owl:Restriction ;
-            owl:minCardinality 0 ;
-            owl:onProperty dgo:DGO_00000033 ],
         [ a owl:Restriction ;
             owl:allValuesFrom xsd:anyURI ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty dgo:DGO_00000028 ],
+            owl:allValuesFrom dgo:DGO_00000019 ;
+            owl:onProperty dgo:DGO_00000032 ],
         [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000011 ;
+            owl:minCardinality 0 ;
+            owl:onProperty dgo:DGO_00000032 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty dgo:id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
             owl:onProperty dgo:DGO_00000033 ],
         [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000017 ;
+            owl:onProperty dgo:DGO_00000029 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom IAO:0000030 ;
+            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000050> ],
+        [ a owl:Restriction ;
             owl:maxCardinality 1 ;
-            owl:onProperty dgo:DGO_00000032 ],
+            owl:onProperty dgo:DGO_00000029 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000019 ;
+            owl:onProperty skos:related ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty dgo:DGO_00000028 ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
             owl:onProperty dgo:id ],
         [ a owl:Restriction ;
             owl:maxCardinality 1 ;
+            owl:onProperty dgo:DGO_00000032 ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
             owl:onProperty dgo:DGO_00000029 ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000019 ;
+            owl:onProperty skos:broader ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom dgo:DGO_00000011 ;
+            owl:onProperty dgo:DGO_00000033 ],
         IAO:0000030 ;
     skos:exactMatch dgo:GlossaryTerm ;
     skos:inScheme dgo:glossary .
-
-IAO:0000030 a owl:Class .
-
-dgo:DGO_00000011 a owl:Class ;
-    rdfs:label "governance role" ;
-    IAO:0000115 "What an individual or entity is responsible for with respect to a managed term." ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom dgo:DGO_00000001 ;
-            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom [ owl:intersectionOf [ rdf:first [ owl:unionOf ( dgo:DGO_00000003 dgo:DGO_00000004 dgo:DGO_00000002 ) ] ;
-                            rdf:rest [ rdf:rest () ] ] ] ;
-            owl:onProperty <http://purl.obolibrary.org/obo/RO_0000081> ],
-        <http://purl.obolibrary.org/obo/BFO_0000023> ;
-    skos:exactMatch dgo:GovernanceRole ;
-    skos:inScheme dgo:management .
 
 <http://purl.obolibrary.org/obo/BFO_0000050> a owl:ObjectProperty,
         owl:TransitiveProperty ;

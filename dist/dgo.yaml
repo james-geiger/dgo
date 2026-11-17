@@ -8,7 +8,7 @@ annotations:
     value: https://w3id.org/dgo/
   owl:versionInfo:
     tag: owl:versionInfo
-    value: 0.1.0
+    value: 0.2.0
   owl:imports:
     tag: owl:imports
     value: http://purl.obolibrary.org/obo/bfo.owl http://purl.obolibrary.org/obo/iao.owl
@@ -34,7 +34,7 @@ annotations:
   dcterms:bibliographicCitation:
     tag: dcterms:bibliographicCitation
     value: Geiger, J.M. (2026). An ontology for data governance. Data Governance ontology,
-      v0.1.0. https://w3id.org/dgo/
+      v0.2.0. https://w3id.org/dgo/
   bibo:status:
     tag: bibo:status
     value: specification draft
@@ -45,7 +45,7 @@ description: 'An ontology for data governance: business terms, subject areas, st
   certified data set.'
 title: Data Governance Ontology
 id: https://w3id.org/dgo/
-version: 0.1.0
+version: 0.2.0
 imports:
 - linkml:types
 license: https://w3id.org/dgo/LICENSE
@@ -257,62 +257,6 @@ slots:
     slot_uri: dgo:DGO_00000029
     range: subject area
     inlined: false
-  stored_in:
-    name: stored_in
-    description: The data store that carries this data set (RO generically depends
-      on).
-    from_schema: https://w3id.org/dgo/datasets
-    slot_uri: ro:0010001
-    range: data store
-    multivalued: true
-    inlined: false
-  derived_from:
-    name: derived_from
-    description: The data set or data element this one was produced from. Not transitive;
-      follow a lineage back to its source of truth with a property path (derived from,
-      one or more times).
-    from_schema: https://w3id.org/dgo/datasets
-    close_mappings:
-    - prov:wasDerivedFrom
-    slot_uri: dgo:DGO_00000045
-    range: identifiable
-    multivalued: true
-    inlined: false
-    any_of:
-    - range: data set
-    - range: data element
-  sensitivity:
-    name: sensitivity
-    description: The sensitivity level of this data.
-    from_schema: https://w3id.org/dgo/datasets
-    slot_uri: dgo:DGO_00000046
-    range: sensitivity level
-    inlined: false
-  security_level:
-    name: security_level
-    description: The security level this data requires.
-    from_schema: https://w3id.org/dgo/datasets
-    slot_uri: dgo:DGO_00000047
-    range: security level
-    inlined: false
-  regulatory_categories:
-    name: regulatory_categories
-    description: The regulatory regimes this data falls under.
-    from_schema: https://w3id.org/dgo/datasets
-    slot_uri: dgo:DGO_00000048
-    range: regulatory category
-    multivalued: true
-    inlined: false
-  severity:
-    name: severity
-    implements:
-    - owl:AnnotationProperty
-    description: 'The level''s position within its organization''s scheme: higher
-      means more harm on disclosure (sensitivity) or stricter controls (security).
-      Lets lineage checks find the most severe level along a path.'
-    from_schema: https://w3id.org/dgo/datasets
-    slot_uri: dgo:DGO_00000049
-    range: integer
   pref_label:
     name: pref_label
     implements:
@@ -394,16 +338,73 @@ slots:
     slot_uri: dgo:DGO_00000051
     range: glossary term
     inlined: false
-  informed_by:
-    name: informed_by
-    description: The data elements whose values define or determine this term (e.g.
-      a protocol status and an open date together determine "active study"). Information
-      flows up from the data into the term.
-    from_schema: https://w3id.org/dgo/glossary
-    slot_uri: dgo:DGO_00000044
-    range: data element
+  stored_in:
+    name: stored_in
+    description: The data store that carries this data set (RO generically depends
+      on).
+    from_schema: https://w3id.org/dgo/datasets
+    slot_uri: ro:0010001
+    range: data store
     multivalued: true
     inlined: false
+  represents:
+    name: represents
+    description: The glossary term whose definition gives this data element's values
+      their meaning (e.g. the column tot_dir_cost represents the term "direct cost").
+      The values are instances of what the term defines; the element is not about
+      the term. Following derived from, it shows which terms a lineage shares and
+      where the meaning changes.
+    from_schema: https://w3id.org/dgo/datasets
+    slot_uri: dgo:DGO_00000044
+    range: glossary term
+    inlined: false
+  derived_from:
+    name: derived_from
+    description: The data set or data element this one was produced from. Not transitive;
+      follow a lineage back to its source of truth with a property path (derived from,
+      one or more times).
+    from_schema: https://w3id.org/dgo/datasets
+    close_mappings:
+    - prov:wasDerivedFrom
+    slot_uri: dgo:DGO_00000045
+    range: identifiable
+    multivalued: true
+    inlined: false
+    any_of:
+    - range: data set
+    - range: data element
+  sensitivity:
+    name: sensitivity
+    description: The sensitivity level of this data.
+    from_schema: https://w3id.org/dgo/datasets
+    slot_uri: dgo:DGO_00000046
+    range: sensitivity level
+    inlined: false
+  security_level:
+    name: security_level
+    description: The security level this data requires.
+    from_schema: https://w3id.org/dgo/datasets
+    slot_uri: dgo:DGO_00000047
+    range: security level
+    inlined: false
+  regulatory_categories:
+    name: regulatory_categories
+    description: The regulatory regimes this data falls under.
+    from_schema: https://w3id.org/dgo/datasets
+    slot_uri: dgo:DGO_00000048
+    range: regulatory category
+    multivalued: true
+    inlined: false
+  severity:
+    name: severity
+    implements:
+    - owl:AnnotationProperty
+    description: 'The level''s position within its organization''s scheme: higher
+      means more harm on disclosure (sensitivity) or stricter controls (security).
+      Lets lineage checks find the most severe level along a path.'
+    from_schema: https://w3id.org/dgo/datasets
+    slot_uri: dgo:DGO_00000049
+    range: integer
 classes:
   entity:
     name: entity
@@ -674,6 +675,80 @@ classes:
     - id
     - label
     class_uri: dgo:DGO_00000018
+  glossary term:
+    name: glossary term
+    description: A governed business term that relates, in whole or in part, to data
+      that exists within an organization's governance.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    - pref_label
+    - alt_labels
+    - definition
+    - definition_source
+    - part_of
+    - in_subject_area
+    - broader
+    - related
+    - value_of
+    - semantic_type
+    - replaced_by
+    - responsibilities
+    slot_usage:
+      part_of:
+        name: part_of
+        range: business glossary
+        required: true
+      in_subject_area:
+        name: in_subject_area
+        required: true
+    class_uri: dgo:DGO_00000019
+  definition source:
+    name: definition source
+    description: A source that a term's definition is drawn from. Its id is the source's
+      IRI; its label describes the source. Many terms may cite one source.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: information content entity
+    slots:
+    - id
+    - label
+    class_uri: dgo:DGO_00000030
+  term lifecycle process:
+    name: term lifecycle process
+    description: A governance process that brings a business term into, or changes
+      it within, the business glossary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: lifecycle process
+    slot_usage:
+      has_output:
+        name: has_output
+        range: glossary term
+        required: true
+    class_uri: dgo:DGO_00000020
+  term creation:
+    name: term creation
+    description: The process by which a new governed business term is proposed, validated,
+      and approved for publishing in the  business glossary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: term lifecycle process
+    class_uri: dgo:DGO_00000021
+  term modification:
+    name: term modification
+    description: The process by which an extant governed business term is proposed
+      to be modified, validated, and approved for publishing in the business glossary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: term lifecycle process
+    class_uri: dgo:DGO_00000022
+  term deprecation:
+    name: term deprecation
+    description: The process by which an extant governed business term is proposed
+      to be retired from the business glossary. The term is deprecated once this process
+      reaches its approved boundary.
+    from_schema: https://w3id.org/dgo/glossary
+    is_a: term lifecycle process
+    class_uri: dgo:DGO_00000031
   material entity:
     name: material entity
     from_schema: https://w3id.org/dgo/datasets
@@ -712,9 +787,9 @@ classes:
     name: data set
     description: 'A governed collection of data elements (IAO data collection: a data
       entity that consists of multiple data entities). Its domains follow from its
-      subject areas; its terms are those informed by its data elements. A data set
-      is certified when a data set certification that has it as output reaches an
-      approved boundary. A data set that is derived from no other is a source of truth.'
+      subject areas; its terms are those its data elements represent. A data set is
+      certified when a data set certification that has it as output reaches an approved
+      boundary. A data set that is derived from no other is a source of truth.'
     from_schema: https://w3id.org/dgo/datasets
     close_mappings:
     - dcat:Dataset
@@ -743,8 +818,9 @@ classes:
     name: data element
     description: 'A field or column within one data set: all of that set''s values
       for one attribute. The same attribute held in another set is another data element,
-      linked to this one by derived from. Its subject areas, and so its domains, are
-      those of its data set.'
+      linked to this one by derived from. It represents the glossary term that gives
+      its values their meaning. Its subject areas, and so its domains, are those of
+      its data set.'
     from_schema: https://w3id.org/dgo/datasets
     is_a: data entity
     slots:
@@ -752,6 +828,7 @@ classes:
     - label
     - description
     - part_of
+    - represents
     - derived_from
     - sensitivity
     - security_level
@@ -818,79 +895,4 @@ classes:
     from_schema: https://w3id.org/dgo/datasets
     is_a: data classification
     class_uri: dgo:DGO_00000043
-  glossary term:
-    name: glossary term
-    description: A governed business term that relates, in whole or in part, to data
-      that exists within an organization's governance.
-    from_schema: https://w3id.org/dgo/glossary
-    is_a: information content entity
-    slots:
-    - id
-    - label
-    - pref_label
-    - alt_labels
-    - definition
-    - definition_source
-    - part_of
-    - in_subject_area
-    - broader
-    - related
-    - value_of
-    - semantic_type
-    - replaced_by
-    - responsibilities
-    - informed_by
-    slot_usage:
-      part_of:
-        name: part_of
-        range: business glossary
-        required: true
-      in_subject_area:
-        name: in_subject_area
-        required: true
-    class_uri: dgo:DGO_00000019
-  definition source:
-    name: definition source
-    description: A source that a term's definition is drawn from. Its id is the source's
-      IRI; its label describes the source. Many terms may cite one source.
-    from_schema: https://w3id.org/dgo/glossary
-    is_a: information content entity
-    slots:
-    - id
-    - label
-    class_uri: dgo:DGO_00000030
-  term lifecycle process:
-    name: term lifecycle process
-    description: A governance process that brings a business term into, or changes
-      it within, the business glossary.
-    from_schema: https://w3id.org/dgo/glossary
-    is_a: lifecycle process
-    slot_usage:
-      has_output:
-        name: has_output
-        range: glossary term
-        required: true
-    class_uri: dgo:DGO_00000020
-  term creation:
-    name: term creation
-    description: The process by which a new governed business term is proposed, validated,
-      and approved for publishing in the  business glossary.
-    from_schema: https://w3id.org/dgo/glossary
-    is_a: term lifecycle process
-    class_uri: dgo:DGO_00000021
-  term modification:
-    name: term modification
-    description: The process by which an extant governed business term is proposed
-      to be modified, validated, and approved for publishing in the business glossary.
-    from_schema: https://w3id.org/dgo/glossary
-    is_a: term lifecycle process
-    class_uri: dgo:DGO_00000022
-  term deprecation:
-    name: term deprecation
-    description: The process by which an extant governed business term is proposed
-      to be retired from the business glossary. The term is deprecated once this process
-      reaches its approved boundary.
-    from_schema: https://w3id.org/dgo/glossary
-    is_a: term lifecycle process
-    class_uri: dgo:DGO_00000031
 source_file: src/dgo.yaml

@@ -18,8 +18,8 @@
 # 3. The OnCore protocols data set, carried by the OnCore CTMS, is the source of
 #    truth for protocol status and open date. The Clinical Trials Enrollment data
 #    set in the enterprise data warehouse is derived from it, field by field.
-#    The term "active study" is informed by both fields, in both sets. Both
-#    sets are confidential, role-based, and PHI. Research IT is custodian of
+#    Each field, in both sets, represents a glossary term ("protocol status",
+#    "protocol open date"). Both sets are confidential, role-based, and PHI. Research IT is custodian of
 #    both stores. The RA committee certified the warehouse set on 2026-10-20.
 
 # --- governance ---------------------------------------------------------------
@@ -102,18 +102,17 @@ glossary_terms:
     in_subject_area: ex:clinical-research
     replaced_by: ex:clinical-trial   # its successor; deprecated by ex:clinical-investigation-deprecation
 
-  - id: ex:active-study
-    label: active study
-    definition: a clinical study that is open to accrual and has passed its open date
+  - id: ex:protocol-status
+    label: protocol status
+    definition: the stage a clinical study protocol is in, such as open to accrual, on hold, or closed
     part_of: ex:unmc-glossary
     in_subject_area: ex:clinical-research
-    broader:
-      - ex:clinical-study
-    informed_by:                     # the data that determines the term, in both sets
-      - ex:oncore-protocol-status
-      - ex:oncore-open-date
-      - ex:edw-protocol-status
-      - ex:edw-open-date
+
+  - id: ex:protocol-open-date
+    label: protocol open date
+    definition: the date a clinical study protocol opened to accrual
+    part_of: ex:unmc-glossary
+    in_subject_area: ex:clinical-research
 
 definition_sources:              # id is the source's IRI; label describes it
   - id: https://grants.nih.gov/policy/clinical-trials/definition.htm
@@ -244,19 +243,23 @@ data_elements:                   # each element is part of exactly one data set
   - id: ex:oncore-protocol-status
     label: protocol status
     part_of: ex:oncore-protocols
+    represents: ex:protocol-status   # what the values mean (one term per column)
   - id: ex:oncore-open-date
     label: open date
     part_of: ex:oncore-protocols
+    represents: ex:protocol-open-date
     sensitivity: ex:internal         # an element may carry its own, lower, level
 
   - id: ex:edw-protocol-status
     label: protocol status
     part_of: ex:ct-enrollment
+    represents: ex:protocol-status
     derived_from:
       - ex:oncore-protocol-status
   - id: ex:edw-open-date
     label: open date
     part_of: ex:ct-enrollment
+    represents: ex:protocol-open-date
     derived_from:
       - ex:oncore-open-date
 

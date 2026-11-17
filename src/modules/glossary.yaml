@@ -5,7 +5,6 @@ imports:
   - core
   - management
   - domains
-  - datasets
 
 classes:
 
@@ -29,7 +28,6 @@ classes:
       - semantic_type
       - replaced_by
       - responsibilities
-      - informed_by
     slot_usage:
       part_of: { range: business glossary, required: true }
       in_subject_area: { required: true }
@@ -144,13 +142,3 @@ slots:
     range: glossary term
     inlined: false
     implements: [owl:AnnotationProperty]
-
-  informed_by:
-    description: >-
-      The data elements whose values define or determine this term (e.g. a
-      protocol status and an open date together determine "active study").
-      Information flows up from the data into the term.
-    slot_uri: dgo:DGO_00000044
-    range: data element
-    multivalued: true
-    inlined: false

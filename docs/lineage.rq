@@ -2,7 +2,7 @@
 #
 # One row per data set on the path (the certified set itself included), with
 # the governance and terminology it carries: its store, subject areas and their
-# domains, the glossary terms informed by its data elements, its
+# domains, the glossary terms its data elements represent, its
 # classifications, and who holds which role over it. A set derived from
 # nothing is a source of truth.
 #
@@ -45,10 +45,10 @@ WHERE {
     OPTIONAL { ?area bfo:0000050+ ?domain . ?domain a dgo:DGO_00000016 ;   # its domain
                                              rdfs:label ?domainLabel }
   }
-  OPTIONAL {                                       # terms informed by its elements
-    ?element bfo:0000050 ?set .
-    ?term dgo:DGO_00000044 ?element ;              # informed by
-          rdfs:label ?termLabel
+  OPTIONAL {                                       # terms its elements represent
+    ?element bfo:0000050 ?set ;
+             dgo:DGO_00000044 ?term .              # represents
+    ?term rdfs:label ?termLabel
   }
   OPTIONAL { ?set dgo:DGO_00000046 ?sens . ?sens rdfs:label ?sensitivityLabel }
   OPTIONAL { ?set dgo:DGO_00000047 ?sec . ?sec rdfs:label ?securityLabel }

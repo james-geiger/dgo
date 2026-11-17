@@ -4,7 +4,7 @@ description: >-
   An ontology for data governance: business terms, subject areas,
   stewardship roles and responsibilities, term-lifecycle status,
   data classification, and semantic typing.
-version: 0.1.0
+version: 0.2.0
 license: https://w3id.org/dgo/LICENSE
 
 prefixes:
