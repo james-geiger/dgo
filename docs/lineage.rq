@@ -27,9 +27,10 @@ SELECT ?certified ?certifiedOn ?set ?setLabel ?sourceOfTruth
        (GROUP_CONCAT(DISTINCT ?regLabel; separator=", ")      AS ?regulatory)
        (GROUP_CONCAT(DISTINCT ?roleHolder; separator=", ")    AS ?roles)
 WHERE {
-  # a certified set: output of a certification that reached an approved boundary
-  ?cert a dgo:DGO_00000039 ;                      # data set certification
+  # a certified set: output of a creation that reached an approved boundary
+  ?cert a dgo:DGO_00000021 ;                      # creation
         ro:0002234 ?certified .                   # has output
+  ?certified a iao:0001000 .                      # a data set, not a term
   ?approved a dgo:DGO_00000026 ;                  # approved
             bfo:0000050 ?cert ;
             dcterms:date ?certifiedOn .

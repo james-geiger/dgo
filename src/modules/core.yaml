@@ -34,6 +34,10 @@ imports:
 
 classes:
 
+  information content entity:
+    class_uri: iao:0000030
+    mixins: [identifiable]
+
   entity:
     class_uri: bfo:0000001
 

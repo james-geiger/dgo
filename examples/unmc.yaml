@@ -120,20 +120,26 @@ definition_sources:              # id is the source's IRI; label describes it
 
 # --- how the terms came to be -------------------------------------------------
 
-term_creations:
+lifecycle_processes:
   - id: ex:clinical-trial-creation
+    type: dgo:DGO_00000021           # creation
     label: Creation of the term "clinical trial"
     has_output: ex:clinical-trial
     part_of: ex:ra-dg                # created within RA data governance, so governed by its committee
-
-term_modifications:
+  - id: ex:ct-enrollment-certification
+    type: dgo:DGO_00000021           # creation: one whose output is a data set certifies it
+    label: Certification of Clinical Trials Enrollment
+    has_output: ex:ct-enrollment
+    has_participant:
+      - ex:ra-committee
+    part_of: ex:ra-dg                # certified within RA data governance, so by its committee
   - id: ex:clinical-trial-modification
+    type: dgo:DGO_00000022           # modification
     label: Addition of a definition source to "clinical trial"
     has_output: ex:clinical-trial    # same term, same id: a modification changes it, not replaces it
     part_of: ex:ra-dg
-
-term_deprecations:
   - id: ex:clinical-investigation-deprecation
+    type: dgo:DGO_00000031           # deprecation
     label: Deprecation of the term "clinical investigation"
     has_output: ex:clinical-investigation
     part_of: ex:ra-dg                # deprecated once this process reaches its approved boundary
@@ -262,11 +268,3 @@ data_elements:                   # each element is part of exactly one data set
     represents: ex:protocol-open-date
     derived_from:
       - ex:oncore-open-date
-
-data_set_certifications:
-  - id: ex:ct-enrollment-certification
-    label: Certification of Clinical Trials Enrollment
-    has_output: ex:ct-enrollment
-    has_participant:
-      - ex:ra-committee
-    part_of: ex:ra-dg                # certified within RA data governance, so by its committee

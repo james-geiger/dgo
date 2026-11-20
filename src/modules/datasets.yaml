@@ -18,6 +18,7 @@ classes:
 
   data entity:
     class_uri: iao:0000027
+    is_a: information content entity
 
   directive information entity:
     class_uri: iao:0000033
@@ -43,8 +44,8 @@ classes:
       A governed collection of data elements (IAO data collection: a data
       entity that consists of multiple data entities). Its domains follow
       from its subject areas; its terms are those its data elements
-      represent. A data set is certified when a data set certification that
-      has it as output reaches an approved boundary. A data set that is
+      represent. A data set is certified once a creation with it as output
+      reaches an approved boundary. A data set that is
       derived from no other is a source of truth.
     slots:
       - id
@@ -84,17 +85,6 @@ classes:
     slot_usage:
       part_of: { range: data set, required: true }
       derived_from: { range: data element }
-
-  data set certification:
-    class_uri: dgo:DGO_00000039
-    is_a: lifecycle process
-    description: >-
-      The process by which a data set is reviewed and approved as fit for
-      consumers by the responsible data governance council. The data set is
-      certified once this process reaches its approved boundary, whose date is
-      the certification date.
-    slot_usage:
-      has_output: { range: data set, required: true }
 
   data classification:
     class_uri: dgo:DGO_00000040

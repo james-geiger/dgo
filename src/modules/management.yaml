@@ -39,7 +39,31 @@ classes:
       A governance process that brings a governed artifact (a glossary term, a
       data set) into, or changes its standing within, governance. Its progress
       is marked by status boundaries.
-    slots: [has_output, has_participant]
+    slots: [type, has_output, has_participant]
+    slot_usage:
+      has_output: { range: information content entity , required: true }
+
+  creation:
+    class_uri: dgo:DGO_00000021
+    is_a: lifecycle process
+    description: >-
+      The process by which a new governed artifact is proposed, reviewed, and
+      approved for release.
+
+  modification:
+    class_uri: dgo:DGO_00000022
+    is_a: lifecycle process
+    description: >-
+      The process by which an existing governed artifact is proposed to be
+      modified, reviewed, and approved for release.
+
+  deprecation:
+    class_uri: dgo:DGO_00000031
+    is_a: lifecycle process
+    description: >-
+      The process by which an existing governed artifact is proposed to be
+      retired. The artifact is deprecated once this process reaches its
+      approved boundary.
 
   status boundary:
     class_uri: dgo:DGO_00000023
@@ -55,29 +79,33 @@ classes:
     class_uri: dgo:DGO_00000024
     is_a: status boundary
     description: >-
-      The point where a term, modification, or certification has been first drafted.
+      The point at which a proposed change to a governed artifact (a new
+      artifact, a modification, or a deprecation) is first drafted.
 
   submitted for review:
     class_uri: dgo:DGO_00000025
     is_a: status boundary
     description: >-
-      The point where a term, modification, or certification has moved into being
-      verified by a data steward.
+      The point at which a proposed change to a governed artifact is
+      submitted to a data steward for review.
 
   approved:
     class_uri: dgo:DGO_00000026
     is_a: status boundary
     description: >-
-      The point where a term, modification, or certification, resulting from a
-      decision of the responsible data governance council, has been made final.
+      The point at which the responsible data governance council approves a
+      proposed change to a governed artifact, and the change takes effect: a
+      new artifact is released, a modification is applied, or a deprecated
+      artifact is retired.
 
   rejected:
     class_uri: dgo:DGO_00000027
     is_a: status boundary
     description: >-
-      The point where a term, modification, or certification, resulting from a
-      decision of the responsible data governance council, is no longer under
-      consideration.
+      The point at which the responsible data governance council rejects a
+      proposed change to a governed artifact. The change does not take
+      effect: the artifact stays as it was, or a proposed new artifact is not
+      released.
 
   data governance council:
     class_uri: dgo:DGO_00000002

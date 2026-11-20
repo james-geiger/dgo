@@ -27,10 +27,9 @@ classes:
     description: One document holding a governance setup and its registries.
     slots: [processes, councils, people, organizations, council_roles, governance_roles,
             business_glossaries, domains, subject_areas, glossary_terms, definition_sources,
-            term_creations, term_modifications, term_deprecations, status_boundaries,
+            lifecycle_processes, status_boundaries,
             term_status_boundaries, data_stores, data_sets, data_elements,
-            data_set_certifications, sensitivity_levels, security_levels,
-            regulations]
+            sensitivity_levels, security_levels, regulations]
 
 slots:
   processes:
@@ -69,29 +68,24 @@ slots:
     range: glossary term
     multivalued: true
     inlined_as_list: true
-  term_creations:
-    range: term creation
+  lifecycle_processes:
+    description: >-
+      Lifecycle processes of any governed artifact. Give each one's subclass
+      (creation, modification, deprecation) with type.
+    range: lifecycle process
     multivalued: true
     inlined_as_list: true
   definition_sources:
     range: definition source
     multivalued: true
     inlined_as_list: true
-  term_modifications:
-    range: term modification
-    multivalued: true
-    inlined_as_list: true
-  term_deprecations:
-    range: term deprecation
-    multivalued: true
-    inlined_as_list: true
   status_boundaries:
-    description: Status boundaries of any lifecycle process (terms and certifications).
+    description: Status boundaries of any lifecycle process.
     range: status boundary
     multivalued: true
     inlined_as_list: true
   term_status_boundaries:
-    deprecated: Use status_boundaries, which also holds data set certification boundaries.
+    deprecated: Use status_boundaries, which holds the boundaries of every lifecycle process.
     range: status boundary
     multivalued: true
     inlined_as_list: true
@@ -109,10 +103,6 @@ slots:
     inlined_as_list: true
   data_elements:
     range: data element
-    multivalued: true
-    inlined_as_list: true
-  data_set_certifications:
-    range: data set certification
     multivalued: true
     inlined_as_list: true
   sensitivity_levels:

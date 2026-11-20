@@ -10,9 +10,6 @@ imports:
 
 classes:
 
-  information content entity:
-    class_uri: iao:0000030
-
   domain:
     class_uri: dgo:DGO_00000016
     is_a: information content entity

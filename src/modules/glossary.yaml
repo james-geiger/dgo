@@ -39,37 +39,7 @@ classes:
       A source that a term's definition is drawn from. Its id is the source's
       IRI; its label describes the source. Many terms may cite one source.
     slots: [id, label]
-
-  term lifecycle process:
-    class_uri: dgo:DGO_00000020
-    is_a: lifecycle process
-    description: >-
-      A governance process that brings a business term into, or changes it within,
-      the business glossary.
-    slot_usage:
-      has_output: { range: glossary term, required: true }
   
-  term creation:
-    class_uri: dgo:DGO_00000021
-    is_a: term lifecycle process
-    description: >-
-      The process by which a new governed business term is proposed, validated, and approved for publishing in the 
-      business glossary.
-
-  term modification:
-    class_uri: dgo:DGO_00000022
-    is_a: term lifecycle process
-    description: >-
-      The process by which an extant governed business term is proposed to be modified, validated, and approved for publishing in the
-      business glossary.
-
-  term deprecation:
-    class_uri: dgo:DGO_00000031
-    is_a: term lifecycle process
-    description: >-
-      The process by which an extant governed business term is proposed to be retired from
-      the business glossary. The term is deprecated once this process reaches its approved boundary.
-
 slots:
 
   pref_label:

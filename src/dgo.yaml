@@ -7,7 +7,7 @@ description: >-
   semantic typing, and the governed data itself: data stores, data sets,
   data elements, their sensitivity, security and regulatory classification,
   certification, and lineage from source of truth to certified data set.
-version: 0.2.0
+version: 0.3.0
 license: https://w3id.org/dgo/LICENSE
 
 prefixes:
@@ -26,7 +26,7 @@ imports:
 annotations:
   vann:preferredNamespacePrefix: dgo
   vann:preferredNamespaceUri: https://w3id.org/dgo/
-  owl:versionInfo: "0.2.0"
+  owl:versionInfo: "0.3.0"
   owl:imports: "http://purl.obolibrary.org/obo/bfo.owl http://purl.obolibrary.org/obo/iao.owl"
   dcterms:description: >-
     An ontology for data governance: business terms, subject areas,
